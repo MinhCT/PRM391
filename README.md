@@ -1,3 +1,3 @@
 # PRM391
 
-Weather Forecast Android Project - FPT University
+AttendanceTool Android Project - FPT University
