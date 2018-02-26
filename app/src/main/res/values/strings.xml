@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">AttendanceTool</string>
+    <string name="title_activity_student_main">Schedule</string>
+    <string name="title_activity_teacher_main">TeacherMainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- Texts used in views -->
+    <string name="student_main_select_term_text">Select Term:</string>
+    <string name="student_main_select_course_text">Select Course:</string>
+    <string name="student_main_table_column_1_text">Day</string>
+    <string name="student_main_table_column_2_text">Slot</string>
+    <string name="student_main_table_column_3_text">Lecturer</string>
+    <string name="student_main_table_column_4_text">Class</string>
+    <string name="student_main_table_column_5_text">Status</string>
+    <string name="student_main_table_column_6_text">Report</string>
+
+    <!-- Colors used in views -->
+    <color name="header_color">#C7412E</color>
+
+    <!-- Credentials Info -->
+    <string name="google_login_server_client_id">636096643581-1s1gj0spot4b9dl3lgqe34m6piiv5mq6.apps.googleusercontent.com</string>
+</resources>

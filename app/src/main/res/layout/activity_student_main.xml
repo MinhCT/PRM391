@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.project.group2.attendancetool.activity.student.StudentMainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/student_main_select_term_text" />
+
+                <Spinner
+                    android:id="@+id/spinnerTerm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/student_main_select_course_text" />
+
+                <Spinner
+                    android:id="@+id/spinnerCourse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/tableLayoutStudentSchedule"
+            android:stretchColumns="*">
+
+
+            <TableRow
+                android:background="@color/header_color">
+
+                <TextView
+                    android:layout_column="0"
+                    android:layout_weight="1"
+                    android:text="@string/student_main_table_column_1_text"/>
+
+                <TextView
+                    android:layout_column="1"
+                    android:layout_weight="1"
+                    android:text="@string/student_main_table_column_2_text" />
+
+                <TextView
+                    android:layout_column="2"
+                    android:layout_weight="1"
+                    android:text="@string/student_main_table_column_3_text" />
+
+                <TextView
+                    android:layout_column="3"
+                    android:layout_weight="1"
+                    android:text="@string/student_main_table_column_4_text" />
+
+                <TextView
+                    android:layout_column="4"
+                    android:layout_weight="1"
+                    android:text="@string/student_main_table_column_5_text" />
+
+                <TextView
+                    android:layout_column="5"
+                    android:layout_weight="1"
+                    android:text="@string/student_main_table_column_6_text" />
+            </TableRow>
+        </TableLayout>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
