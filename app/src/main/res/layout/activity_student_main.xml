@@ -50,21 +50,19 @@
 
         </LinearLayout>
 
-        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <TableLayout
+            android:id="@+id/tableLayoutScheduleHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/tableLayoutStudentSchedule"
+            android:layout_below="@id/linearLayout"
             android:stretchColumns="*">
 
-
-            <TableRow
-                android:background="@color/header_color">
+            <TableRow android:background="@color/header_color">
 
                 <TextView
                     android:layout_column="0"
                     android:layout_weight="1"
-                    android:text="@string/student_main_table_column_1_text"/>
+                    android:text="@string/student_main_table_column_1_text" />
 
                 <TextView
                     android:layout_column="1"
@@ -92,6 +90,18 @@
                     android:text="@string/student_main_table_column_6_text" />
             </TableRow>
         </TableLayout>
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tableLayoutScheduleHeader">
+
+            <TableLayout
+                android:id="@+id/tableLayoutStudentSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"></TableLayout>
+        </ScrollView>
 
     </RelativeLayout>
 

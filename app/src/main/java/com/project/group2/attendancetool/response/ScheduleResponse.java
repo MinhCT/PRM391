@@ -8,9 +8,9 @@ import java.util.List;
  * Response Model for a list of schedule records
  */
 public class ScheduleResponse {
-    private List<Schedule> schedules;
+    private List<Schedule> Schedules;
 
     public List<Schedule> getSchedules() {
-        return schedules;
+        return Schedules;
     }
 }

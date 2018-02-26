@@ -150,6 +150,7 @@ public class StudentMainActivity extends AppCompatActivity {
      * @param scheduleList - a list of schedule records obtained after web service call
      */
     private void loadStudentScheduleTable(List<Schedule> scheduleList) {
+        tableLayoutStudentSchedule.removeAllViews(); // Clear old data rows
         for (Schedule schedule : scheduleList) {
             final TableRow scheduleRow = new TableRow(this);
             scheduleRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));

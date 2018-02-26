@@ -43,7 +43,16 @@ public class AttendanceManagement {
         StringRequest getRequest = new StringRequest(
                 Request.Method.POST,
                 EWebApiEndpoints.LOAD_TERM_ENDPOINT.toString(),
-                createResponseListener(callback, statusCode[0]),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (statusCode[0] == 200) {
+                            // Pass the response to callback functions to handle after volley has
+                            // finished the request and receive response
+                            callback.onSuccess(response);
+                        }
+                    }
+                },
                 createErrorResponseListener()
         ) {
             @Override
@@ -77,7 +86,16 @@ public class AttendanceManagement {
         StringRequest getRequest = new StringRequest(
                 Request.Method.POST,
                 EWebApiEndpoints.LOAD_COURSE_ENDPOINT.toString(),
-                createResponseListener(callback, statusCode[0]),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (statusCode[0] == 200) {
+                            // Pass the response to callback functions to handle after volley has
+                            // finished the request and receive response
+                            callback.onSuccess(response);
+                        }
+                    }
+                },
                 createErrorResponseListener()
         ) {
             @Override
@@ -106,7 +124,7 @@ public class AttendanceManagement {
      *
      * @param callback - callback target to send response content to
      * @param courseId - the selected course id from spinner
-     * @param termId - the selected term id from spinner
+     * @param termId   - the selected term id from spinner
      */
     public void getSchedules(final IVolleyCallback callback, final String courseId, final String termId) {
         final int[] statusCode = {0};
@@ -114,7 +132,16 @@ public class AttendanceManagement {
         final StringRequest getRequest = new StringRequest(
                 Request.Method.POST,
                 EWebApiEndpoints.LOAD_STUDENT_SCHEDULE_ENDPOINT.toString(),
-                createResponseListener(callback, statusCode[0]),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (statusCode[0] == 200) {
+                            // Pass the response to callback functions to handle after volley has
+                            // finished the request and receive response
+                            callback.onSuccess(response);
+                        }
+                    }
+                },
                 createErrorResponseListener()
         ) {
             @Override
@@ -152,7 +179,16 @@ public class AttendanceManagement {
         StringRequest postRequest = new StringRequest(
                 Request.Method.POST,
                 EWebApiEndpoints.REPORT_ATTENDANCE_ENDPOINT.toString(),
-                createResponseListener(callback, statusCode[0]),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (statusCode[0] == 200) {
+                            // Pass the response to callback functions to handle after volley has
+                            // finished the request and receive response
+                            callback.onSuccess(response);
+                        }
+                    }
+                },
                 createErrorResponseListener()
         ) {
             @Override
@@ -180,26 +216,6 @@ public class AttendanceManagement {
      */
     private Context getApplicationContext() {
         return applicationContext;
-    }
-
-    /**
-     * Create a new Response.Listener for Volley request
-     *
-     * @param callback   - a targeted callback to send response to
-     * @param statusCode - response code after api call
-     * @return - a Response.Listener object
-     */
-    private Response.Listener<String> createResponseListener(final IVolleyCallback callback, final int statusCode) {
-        return new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (statusCode == 200) {
-                    // Pass the response to callback functions to handle after volley has
-                    // finished the request and receive response
-                    callback.onSuccess(response);
-                }
-            }
-        };
     }
 
     /**
