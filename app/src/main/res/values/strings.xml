@@ -23,4 +23,14 @@
 
     <!-- Credentials Info -->
     <string name="google_login_server_client_id">636096643581-1s1gj0spot4b9dl3lgqe34m6piiv5mq6.apps.googleusercontent.com</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_slot">SlotActivity</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="action_example">Example action</string>
 </resources>

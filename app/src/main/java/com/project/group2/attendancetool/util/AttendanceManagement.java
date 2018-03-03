@@ -18,6 +18,7 @@ import com.project.group2.attendancetool.enums.EWebApiEndpoints;
 import com.project.group2.attendancetool.helper.EncodeVolleyBody;
 import com.project.group2.attendancetool.interfaces.IVolleyCallback;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -195,6 +196,42 @@ public class AttendanceManagement {
             public byte[] getBody() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("scheduleId", scheduleId + "");
+                return EncodeVolleyBody.encodeParams(params, "UTF-8");
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                statusCode[0] = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+
+        // Send request to the server
+        requestQueue.add(postRequest);
+    }
+
+    public void getSlotList(final IVolleyCallback callback, final Date date){
+        final int[] statusCode = new int[1];
+        final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest postRequest = new StringRequest(
+                Request.Method.POST,
+                EWebApiEndpoints.LOAD_SLOT_LIST_ENDPOINT.toString(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (statusCode[0] == 200) {
+                            // Pass the response to callback functions to handle after volley has
+                            // finished the request and receive response
+                            callback.onSuccess(response);
+                        }
+                    }
+                },
+                createErrorResponseListener()
+        ) {
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Date", date.toString());
                 return EncodeVolleyBody.encodeParams(params, "UTF-8");
             }
 
