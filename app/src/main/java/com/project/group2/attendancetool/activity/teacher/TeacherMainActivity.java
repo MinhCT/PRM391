@@ -18,20 +18,25 @@ import com.project.group2.attendancetool.R;
 import com.project.group2.attendancetool.activity.teacher.Fragments.NotificationFragment;
 import com.project.group2.attendancetool.activity.teacher.Fragments.ScheduleFragment;
 import com.project.group2.attendancetool.activity.teacher.Fragments.SlotListFragment;
+import com.project.group2.attendancetool.interfaces.IVolleyCallback;
 import com.project.group2.attendancetool.util.AttendanceManagement;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class TeacherMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar toolbar;
     NavigationView navigationView;
-    private AttendanceManagement attendanceManagement;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_main);
-        attendanceManagement = new AttendanceManagement(this);
+
 
 
         //Set the fragment initially

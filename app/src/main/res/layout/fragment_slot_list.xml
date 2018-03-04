@@ -13,59 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></Spinner>
 
-    <TextView
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Slot 1 (7h30 - 9h00)"
-        android:textSize="20dp"
-        android:textColor="@color/colorWhite"
-        android:background="@color/colorYellow"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"/>
+        android:id="@+id/lvSlotList"></ListView>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="40dp"
-            android:text="Class: IS1101"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="40dp"
-            android:text="Subject: PRM391 - Mobile Programming"/>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Take Attendance"
-                android:textSize="12dp"
-                android:layout_gravity="right"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="15dp"
-                />
-        </FrameLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:background="@android:color/darker_gray" />
-
-    </LinearLayout>
 
 
 

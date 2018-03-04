@@ -11,14 +11,18 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.project.group2.attendancetool.enums.ELogTag;
 import com.project.group2.attendancetool.enums.EWebApiEndpoints;
 import com.project.group2.attendancetool.helper.EncodeVolleyBody;
 import com.project.group2.attendancetool.interfaces.IVolleyCallback;
+import com.project.group2.attendancetool.interfaces.IVolleyJsonCallback;
 
-import java.sql.Date;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -210,40 +214,57 @@ public class AttendanceManagement {
         requestQueue.add(postRequest);
     }
 
-    public void getSlotList(final IVolleyCallback callback, final Date date){
+    public void getSlotList(final IVolleyJsonCallback callback, final java.util.Date date){
         final int[] statusCode = new int[1];
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+
+        try{
+            jsonObject.put("Date", "2018-02-05");
+            jsonObject.put("UserId", "AnhBN");
+            jsonObject.put("RoleName", "teacher");
+            jsonArray.put(jsonObject);
+        }catch(Exception e){
+        }
         final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest postRequest = new StringRequest(
-                Request.Method.POST,
-                EWebApiEndpoints.LOAD_SLOT_LIST_ENDPOINT.toString(),
-                new Response.Listener<String>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, EWebApiEndpoints.LOAD_SLOT_LIST_ENDPOINT.toString(), jsonObject,
+                new Response.Listener<JSONObject>(){
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(JSONObject response) {
                         if (statusCode[0] == 200) {
                             // Pass the response to callback functions to handle after volley has
                             // finished the request and receive response
-                            callback.onSuccess(response);
+                            callback.onJsonRequestSucess(response);
                         }
                     }
                 },
-                createErrorResponseListener()
-        ) {
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("Date", date.toString());
-                return EncodeVolleyBody.encodeParams(params, "UTF-8");
-            }
+        new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error.Response", error.toString());
+                        String json = null;
+                        NetworkResponse response = error.networkResponse;
+                        if(response != null && response.data != null){
+                            switch(response.statusCode){
+                                case 400:
 
+                                    json = new String(response.data);
+                                    System.out.println(json);
+                                    break;
+                            }
+                            //Additional cases
+                        }
+                    }
+                })
+        {
             @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 statusCode[0] = response.statusCode;
                 return super.parseNetworkResponse(response);
             }
         };
-
         // Send request to the server
-        requestQueue.add(postRequest);
+        requestQueue.add(jsonObjectRequest);
     }
 
     /**
