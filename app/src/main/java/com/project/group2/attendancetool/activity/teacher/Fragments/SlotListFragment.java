@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
 import com.project.group2.attendancetool.R;
 import com.project.group2.attendancetool.activity.teacher.CustomListAdapter;
 import com.project.group2.attendancetool.interfaces.IVolleyCallback;
@@ -18,6 +19,7 @@ import com.project.group2.attendancetool.model.Classes;
 import com.project.group2.attendancetool.model.Course;
 import com.project.group2.attendancetool.model.Slot;
 import com.project.group2.attendancetool.model.SlotInformation;
+import com.project.group2.attendancetool.response.GetTermByTeacherResponse;
 import com.project.group2.attendancetool.util.AttendanceManagement;
 
 import org.json.JSONObject;
@@ -51,21 +53,17 @@ public class SlotListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         attendanceManagement = new AttendanceManagement(this.getContext());
-        Calendar currentDate = Calendar.getInstance();
-
+        lvSlotList = (ListView)getView().findViewById(R.id.lvSlotList);
         Date date = new Date();
         attendanceManagement.getSlotList(new IVolleyJsonCallback() {
             @Override
             public void onJsonRequestSucess(JSONObject result) {
-                Log.d("Debug",result.toString());
+                Gson gson = new Gson();
+                String resultInString = result.toString();
+                GetTermByTeacherResponse response = gson.fromJson(resultInString,GetTermByTeacherResponse.class);
+                lvSlotList.setAdapter(new CustomListAdapter(getContext(), response.getSlotInformationList()));
             }
         }, date);
-
-        List<SlotInformation> listData = getSlotInformationList();
-        lvSlotList = (ListView)getView().findViewById(R.id.lvSlotList);
-
-        lvSlotList.setAdapter(new CustomListAdapter(this.getContext(), listData));
-
         super.onViewCreated(view, savedInstanceState);
     }
 

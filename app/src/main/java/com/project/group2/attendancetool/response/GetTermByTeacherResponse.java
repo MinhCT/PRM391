@@ -1,6 +1,7 @@
 package com.project.group2.attendancetool.response;
 
 import com.project.group2.attendancetool.model.Slot;
+import com.project.group2.attendancetool.model.SlotInformation;
 
 import java.util.List;
 
@@ -9,5 +10,9 @@ import java.util.List;
  */
 
 public class GetTermByTeacherResponse {
-    private List<Slot> SlotList;
+    private List<SlotInformation> SlotInformationList;
+
+    public List<SlotInformation> getSlotInformationList() {
+        return SlotInformationList;
+    }
 }
