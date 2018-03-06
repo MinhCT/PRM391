@@ -5,9 +5,9 @@ package com.project.group2.attendancetool.model;
  */
 
 public class SlotInformation {
-    public Slot Slot;
-    public Course Course;
-    public Classes Classes;
+    private Slot Slot;
+    private Course Course;
+    private Classes Classes;
 
     public SlotInformation(Slot slot, Course course, Classes classes){
         Slot = slot;

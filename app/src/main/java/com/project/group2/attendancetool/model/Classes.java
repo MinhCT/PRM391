@@ -1,10 +1,12 @@
 package com.project.group2.attendancetool.model;
 
+import java.io.Serializable;
+
 /**
  * Created by User on 3/4/2018.
  */
 
-public class Classes {
+public class Classes implements Serializable {
     public String ClassId;
     public String ClassName;
 

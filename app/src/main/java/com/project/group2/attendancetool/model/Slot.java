@@ -1,10 +1,12 @@
 package com.project.group2.attendancetool.model;
 
+import java.io.Serializable;
+
 /**
  * Created by User on 3/3/2018.
  */
 
-public class Slot {
+public class Slot implements Serializable {
     public int SlotId;
     public String StartTime;
     public String EndTime;

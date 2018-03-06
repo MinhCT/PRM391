@@ -33,4 +33,8 @@
     <string name="title_section3">Section 3</string>
 
     <string name="action_example">Example action</string>
+
+    <string name="attendance_statistic_example"><![CDATA[
+                        <b><font color=#F44336>20/30 Attended this class</font></b>
+                        ]]></string>
 </resources>

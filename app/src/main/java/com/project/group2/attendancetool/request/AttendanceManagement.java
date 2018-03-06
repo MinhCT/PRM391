@@ -1,4 +1,4 @@
-package com.project.group2.attendancetool.util;
+package com.project.group2.attendancetool.request;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -214,15 +214,15 @@ public class AttendanceManagement {
         requestQueue.add(postRequest);
     }
 
-    public void getSlotList(final IVolleyJsonCallback callback, final java.util.Date date){
+    public void getSlotList(final IVolleyJsonCallback callback, final String date){
         final int[] statusCode = new int[1];
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
 
         try{
-            jsonObject.put("Date", "2018-02-05");
-            jsonObject.put("UserId", "AnhBN");
-            jsonObject.put("RoleName", "teacher");
+            jsonObject.put("Date", "2018-02-05"); //set for value date
+            jsonObject.put("UserId", "AnhBN");//used in shared preference
+            jsonObject.put("RoleName", "teacher");//used in shared preference
             jsonArray.put(jsonObject);
         }catch(Exception e){
         }

@@ -1,10 +1,6 @@
 package com.project.group2.attendancetool.activity.teacher;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,12 +14,6 @@ import com.project.group2.attendancetool.R;
 import com.project.group2.attendancetool.activity.teacher.Fragments.NotificationFragment;
 import com.project.group2.attendancetool.activity.teacher.Fragments.ScheduleFragment;
 import com.project.group2.attendancetool.activity.teacher.Fragments.SlotListFragment;
-import com.project.group2.attendancetool.interfaces.IVolleyCallback;
-import com.project.group2.attendancetool.util.AttendanceManagement;
-
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class TeacherMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
