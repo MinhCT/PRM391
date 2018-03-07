@@ -5,7 +5,7 @@ package com.project.group2.attendancetool.model;
  */
 public class Schedule {
     private long SchduleId;
-    private String Day;
+    private String Date;
     private int SlotNo;
     private String TeacherId;
     private String Room;
@@ -16,7 +16,7 @@ public class Schedule {
 
     public Schedule(long schduleId, String day, int slotNo, String teacherId, String room, String classId, String attendanceStatus, String reportStatus, String attendanceSummary) {
         SchduleId = schduleId;
-        Day = day;
+        Date = day;
         SlotNo = slotNo;
         TeacherId = teacherId;
         Room = room;
@@ -30,8 +30,8 @@ public class Schedule {
         return SchduleId;
     }
 
-    public String getDay() {
-        return Day;
+    public String getDate() {
+        return Date;
     }
 
     public int getSlotNo() {

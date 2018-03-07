@@ -160,7 +160,7 @@ public class StudentMainActivity extends AppCompatActivity {
 
             TextView dayCell = new TextView(this);
             dayCell.setLayoutParams(eachCellLayout);
-            dayCell.setText(schedule.getDay());
+            dayCell.setText(schedule.getDate());
 
             TextView slotCell = new TextView(this);
             slotCell.setLayoutParams(eachCellLayout);
@@ -190,7 +190,8 @@ public class StudentMainActivity extends AppCompatActivity {
             // Check the attendance status and report status to create a clickable text view
             // that student can use to report his/her attendance if the attendance status is Absent
             if (schedule.getAttendanceStatus().equalsIgnoreCase("Absent")
-                    && schedule.getReportStatus().equalsIgnoreCase("Not Reported")) {
+                    && schedule.getReportStatus().equalsIgnoreCase("Not Used")) {
+                reportCell.setText("Report");
                 reportCell.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

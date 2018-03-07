@@ -148,10 +148,10 @@ public class AttendanceManagement {
             public byte[] getBody() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                params.put("userId", userInfoPreferences.getString("userId", null));
-                params.put("roleName", userInfoPreferences.getString("userRole", null));
-                params.put("termId", termId);
-                params.put("courseId", courseId);
+                params.put("UserId", userInfoPreferences.getString("userId", null));
+                params.put("RoleName", userInfoPreferences.getString("userRole", null));
+                params.put("TermId", termId);
+                params.put("CourseId", courseId);
 
                 return EncodeVolleyBody.encodeParams(params, "UTF-8");
             }
@@ -194,7 +194,7 @@ public class AttendanceManagement {
             @Override
             public byte[] getBody() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("scheduleId", scheduleId + "");
+                params.put("ScheduleId", scheduleId + "");
                 return EncodeVolleyBody.encodeParams(params, "UTF-8");
             }
 
