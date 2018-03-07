@@ -1,9 +1,11 @@
 package com.project.group2.attendancetool.model;
 
+import java.io.Serializable;
+
 /**
  * Model class representing by id and name
  */
-public class Course {
+public class Course implements Serializable {
     private String CourseId;
     private String CourseName;
 

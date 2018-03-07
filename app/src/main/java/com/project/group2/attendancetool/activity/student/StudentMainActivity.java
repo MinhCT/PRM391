@@ -20,7 +20,7 @@ import com.project.group2.attendancetool.model.Term;
 import com.project.group2.attendancetool.response.CourseResponse;
 import com.project.group2.attendancetool.response.ScheduleResponse;
 import com.project.group2.attendancetool.response.TermResponse;
-import com.project.group2.attendancetool.util.AttendanceManagement;
+import com.project.group2.attendancetool.request.AttendanceManagement;
 
 import java.util.ArrayList;
 import java.util.List;

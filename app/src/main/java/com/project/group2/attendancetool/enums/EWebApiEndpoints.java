@@ -8,9 +8,12 @@ public enum EWebApiEndpoints {
     LOAD_TERM_ENDPOINT("api/ScheduleManagement/GetTermByUser"),
     LOAD_COURSE_ENDPOINT("api/ScheduleManagement/GetCourseByTerm"),
     LOAD_STUDENT_SCHEDULE_ENDPOINT("api/ScheduleManagement/GetScheduleByUser"),
-    REPORT_ATTENDANCE_ENDPOINT("api/AttendanceReport/ReportToTeacher");
+    REPORT_ATTENDANCE_ENDPOINT("api/AttendanceReport/ReportToTeacher"),
+    LOAD_SLOT_LIST_ENDPOINT("api/SlotManagement/GetSlotByTeacher"),
+    LOAD_SLOT_DETAIL_ENDPOINT("api/SlotManagement/GetSlotDetail");
 
     private final String HOST_URL = "http://10.0.2.2:58262/";
+
     private String fullEndpoint;
 
     EWebApiEndpoints(String url) {
