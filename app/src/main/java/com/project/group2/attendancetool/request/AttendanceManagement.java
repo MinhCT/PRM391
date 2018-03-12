@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class contains methods to retrieve data from web service after a successful api call
+ * Class contains methods to manage attendance data from web service after a successful api call
  */
 public class AttendanceManagement {
 
@@ -265,6 +265,48 @@ public class AttendanceManagement {
         };
         // Send request to the server
         requestQueue.add(jsonObjectRequest);
+    }
+
+    /**
+     * Call the web service to request report status changed to 'Declined' in the server database
+     *
+     * @param callback - callback target to send response content to
+     * @param scheduleId - the id of the schedule corresponding to the reported record in Notification Fragment
+     */
+    public void declineAttendance(final IVolleyCallback callback, final long scheduleId) {
+        final int[] statusCode = new int[1];
+        final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest postRequest = new StringRequest(
+                Request.Method.POST,
+                EWebApiEndpoints.REPORT_ATTENDANCE_ENDPOINT.toString(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (statusCode[0] == 200) {
+                            // Pass the response to callback functions to handle after volley has
+                            // finished the request and receive response
+                            callback.onSuccess(response);
+                        }
+                    }
+                },
+                createErrorResponseListener()
+        ) {
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("ScheduleId", scheduleId + "");
+                return EncodeVolleyBody.encodeParams(params, "UTF-8");
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                statusCode[0] = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+
+        // Send request to the server
+        requestQueue.add(postRequest);
     }
 
     /**

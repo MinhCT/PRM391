@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseMessaging.getInstance().subscribeToTopic("test");
         setContentView(R.layout.activity_main);
         setupSignInClient();
         setupUI();
@@ -174,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
         if (loginRole == null) {
             Toast.makeText(this, "Failed to login, please check if your account's email is valid", Toast.LENGTH_SHORT).show();
         } else if (loginRole.equalsIgnoreCase("teacher")) {
+            SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            FirebaseMessaging.getInstance().subscribeToTopic("teacher_" + userInfoPreferences.getString("userId", ""));
             Intent teacherIntent = new Intent(this, TeacherMainActivity.class);
             startActivity(teacherIntent);
         } else if (loginRole.equalsIgnoreCase("student")) {

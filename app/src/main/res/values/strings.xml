@@ -41,4 +41,6 @@
     <string name="attendance_statistic_example"><![CDATA[
                         <b><font color=#F44336>20/30 Attended this class</font></b>
                         ]]></string>
+    <string name="notification_edit_attendance_string">Edit</string>
+    <string name="notification_decline_attendance_string">Decline</string>
 </resources>
