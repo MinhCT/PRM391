@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,10 +21,11 @@ import com.project.group2.attendancetool.response.GetSlotDetailResponse;
 
 import org.json.JSONObject;
 
-public class SlotDetailActivity extends Activity {
+public class SlotDetailActivity extends Activity implements View.OnClickListener {
     TextView tvAttendanceStatistic, tvSlot, tvClass, tvCourse;
     ListView lvStudents;
     SlotManagement slotManagement;
+    Button btnTakeAttendance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class SlotDetailActivity extends Activity {
         tvClass = findViewById(R.id.tvDetailClass);
         tvCourse = findViewById(R.id.tvDetailSubject);
         lvStudents = findViewById(R.id.lvStudents);
+        btnTakeAttendance = findViewById(R.id.btnTakeAttendance);
 
         Intent intent = this.getIntent();
         String stringDate = intent.getStringExtra("StringDate");
@@ -61,5 +65,17 @@ public class SlotDetailActivity extends Activity {
         Toast.makeText(getApplicationContext(), stringDate + " " + slot.getSlotId() + " " + classes.getClassId(), Toast.LENGTH_SHORT).show();
 
         tvAttendanceStatistic.setText(Html.fromHtml(getResources().getString(R.string.attendance_statistic_example)));
+
+        btnTakeAttendance.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnTakeAttendance:
+                Intent takeAttendanceIntent = new Intent(getApplicationContext(), TakeAttendanceActivity.class);
+                startActivity(takeAttendanceIntent);
+                break;
+        }
     }
 }

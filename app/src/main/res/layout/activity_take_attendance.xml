@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.project.group2.attendancetool.activity.teacher.TakeAttendanceActivity">
+
+    <LinearLayout
+        android:id="@+id/container_take_attendance_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <ImageView
+            android:id="@+id/ivAttendanceImg1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="13dp"
+            android:layout_weight="1"
+            android:background="@color/colorLightGray" />
+
+        <ImageView
+            android:id="@+id/ivAttendanceImg2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="13dp"
+            android:layout_weight="1"
+            android:background="@color/colorLightGray" />
+
+        <ImageView
+            android:id="@+id/ivAttendanceImg3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/colorLightGray"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:layout_marginTop="13dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="13dp"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp">
+
+            <Button
+                android:id="@+id/btnSelectImages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:text="@string/teacher_select_images_from_gallery_button_text" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:text="@string/teacher_capture_images_button_text"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivExpandedImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
+
+</android.support.constraint.ConstraintLayout>

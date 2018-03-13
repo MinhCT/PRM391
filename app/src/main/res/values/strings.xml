@@ -17,6 +17,8 @@
     <string name="student_main_table_column_4_text">Class</string>
     <string name="student_main_table_column_5_text">Status</string>
     <string name="student_main_table_column_6_text">Report</string>
+    <string name="teacher_select_images_from_gallery_button_text">Choose</string>
+    <string name="teacher_capture_images_button_text">Capture</string>
 
     <!-- Colors used in views -->
     <color name="header_color">#C7412E</color>

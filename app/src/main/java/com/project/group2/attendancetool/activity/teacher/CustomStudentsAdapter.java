@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.project.group2.attendancetool.R;
+import com.project.group2.attendancetool.helper.DecodeBase64;
 import com.project.group2.attendancetool.model.StudentAttendance;
 
 import java.util.List;
@@ -64,6 +65,7 @@ public class CustomStudentsAdapter extends BaseAdapter {
         }
 
         StudentAttendance studentAttendance = this.listData.get(i);
+        holder.ivAvatar.setImageBitmap(DecodeBase64.toImageBitmap(studentAttendance.getImage()));
         holder.tvName.setText(studentAttendance.getFullName());
         holder.tvStatus.setText(studentAttendance.getAttendanceStatus());
         return view;

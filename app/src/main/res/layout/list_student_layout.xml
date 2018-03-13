@@ -3,8 +3,8 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:id="@+id/ivAvatar"
         android:src="@drawable/no_avatar"
         android:layout_alignParentTop="true"
