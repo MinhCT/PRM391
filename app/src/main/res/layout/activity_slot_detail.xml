@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvAttendanceStatistic"
         android:textStyle="italic"
+        android:textColor="@color/colorPrimary"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"/>
 
