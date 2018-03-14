@@ -29,7 +29,11 @@ import com.project.group2.attendancetool.helper.Base64Coverter;
 import com.project.group2.attendancetool.helper.JsonObjectConverter;
 import com.project.group2.attendancetool.interfaces.IVolleyCallback;
 import com.project.group2.attendancetool.model.AttendanceRequest;
+import com.project.group2.attendancetool.model.Classes;
+import com.project.group2.attendancetool.model.Course;
+import com.project.group2.attendancetool.model.Slot;
 import com.project.group2.attendancetool.model.StudentAttendance;
+import com.project.group2.attendancetool.model.TakeAttendanceManuallyRequest;
 import com.project.group2.attendancetool.request.AttendanceManagement;
 import com.project.group2.attendancetool.response.TakeAttendanceByImageResponse;
 import com.sangcomz.fishbun.FishBun;
@@ -55,6 +59,13 @@ public class TakeAttendanceActivity extends AppCompatActivity {
     private ArrayList<Bitmap> selectedImageBitmaps;
     private ArrayList<StudentAttendance> studentAttendances;
     private TakeAttendanceByImageResponse response;
+    private AttendanceManagement attendanceManagement;
+    private StudentListWithCheckboxAdapter adapter;
+
+    private Course course;
+    private Classes classes;
+    private Slot slot;
+    private String stringDate;
 
     @BindView(R.id.ivAttendanceImg1)
     ImageView ivAttendanceImg1;
@@ -73,6 +84,8 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_take_attendance);
         setupUI();
 
+        attendanceManagement = new AttendanceManagement(this);
+
         // Retrieve and cache the system's default "short" animation time.
         shortAnimationDuration = getResources().getInteger(
                 android.R.integer.config_shortAnimTime);
@@ -82,8 +95,13 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
+        course = (Course) intent.getSerializableExtra("Course");
+        classes = (Classes) intent.getSerializableExtra("Classes");
+        slot = (Slot) intent.getSerializableExtra("Slot");
+        stringDate = intent.getStringExtra("StringDate");
         studentAttendances = intent.getParcelableArrayListExtra("studentListWithAttendance");
-        lvStudentWithAttendances.setAdapter(new StudentListWithCheckboxAdapter(studentAttendances, this));
+        adapter = new StudentListWithCheckboxAdapter(studentAttendances, this);
+        lvStudentWithAttendances.setAdapter(adapter);
     }
 
     @Override
@@ -246,23 +264,46 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         }
     }
 
+    @OnClick(R.id.btnSubmitManual)
+    void submitManual(){
+        attendanceManagement.submitManualAttendance(new IVolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                Toast.makeText(getApplicationContext(), "manual submit attend", Toast.LENGTH_SHORT).show();
+            }
+        },buildTakeAttendanceManuallyJSONObject());
+    }
+
+    private JSONObject buildTakeAttendanceManuallyJSONObject(){
+
+        TakeAttendanceManuallyRequest request = new TakeAttendanceManuallyRequest(
+                "AnhBN",
+                "teacher",
+                slot.getSlotId(),
+                stringDate,
+                adapter.getData()
+        );
+        JsonObjectConverter<TakeAttendanceManuallyRequest> converter = new JsonObjectConverter<>();
+        return converter.toJsonObject(request);
+    }
+
     @OnClick(R.id.btnSubmitImages)
     void submitImages() {
-        AttendanceManagement attendanceManagement = new AttendanceManagement(this);
         attendanceManagement.submitAttendanceImages(new IVolleyCallback() {
             @Override
             public void onSuccess(String result) {
                 Toast.makeText(getApplicationContext(), "Attendances Submitted Successfully", Toast.LENGTH_SHORT).show();
-                Gson gson = new Gson();
-                response = gson.fromJson(result, TakeAttendanceByImageResponse.class);
-                ArrayList<StudentAttendance> studentAttendances = new ArrayList<>(response.getStudents());
-                lvStudentWithAttendances.setAdapter(null);
-                lvStudentWithAttendances.setAdapter(new StudentListWithCheckboxAdapter(studentAttendances, getApplicationContext()));
+                Intent slotDetailIntent = new Intent(getApplicationContext(), SlotDetailActivity.class);
+                slotDetailIntent.putExtra("StringDate",stringDate);
+                slotDetailIntent.putExtra("Slot",slot);
+                slotDetailIntent.putExtra("Class",classes);
+                slotDetailIntent.putExtra("Course", course);
+                startActivity(slotDetailIntent);
             }
-        }, buildTakeAttendanceJSONObjectRequest());
+        }, buildTakeAttendanceImageJSONObjectRequest());
     }
 
-    private JSONObject buildTakeAttendanceJSONObjectRequest() {
+    private JSONObject buildTakeAttendanceImageJSONObjectRequest() {
         String[] base64ImageStrings = new String[3];
         Intent intent = getIntent();
         SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -271,8 +312,6 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         base64ImageStrings[0] = Base64Coverter.toBase64(((BitmapDrawable)ivAttendanceImg1.getDrawable()).getBitmap());
         base64ImageStrings[1] = Base64Coverter.toBase64(((BitmapDrawable)ivAttendanceImg2.getDrawable()).getBitmap());
         base64ImageStrings[2] = Base64Coverter.toBase64(((BitmapDrawable)ivAttendanceImg3.getDrawable()).getBitmap());
-        int slotId = intent.getIntExtra("slotId", -1);
-        String date = intent.getStringExtra("date");
 
         // Create Object to ready to convert to JSONObject
         imageUrls.add(base64ImageStrings[0]);
@@ -283,8 +322,8 @@ public class TakeAttendanceActivity extends AppCompatActivity {
                 "teacher", //userInfoPreferences.getString("userRole", null)
                 imageUrls,
                 "IS1101",
-                slotId,
-                date
+                slot.getSlotId(),
+                stringDate
         );
 
         JsonObjectConverter<AttendanceRequest> converter = new JsonObjectConverter<>();
