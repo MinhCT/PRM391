@@ -3,7 +3,6 @@ package com.project.group2.attendancetool.model;
 /**
  * Created by User on 3/6/2018.
  */
-
 public class Student {
     private String StudentId;
     private String FullName;

@@ -16,16 +16,23 @@ import com.project.group2.attendancetool.interfaces.IVolleyJsonCallback;
 import com.project.group2.attendancetool.model.Classes;
 import com.project.group2.attendancetool.model.Course;
 import com.project.group2.attendancetool.model.Slot;
+import com.project.group2.attendancetool.model.StudentAttendance;
 import com.project.group2.attendancetool.request.SlotManagement;
 import com.project.group2.attendancetool.response.GetSlotDetailResponse;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class SlotDetailActivity extends Activity implements View.OnClickListener {
     TextView tvAttendanceStatistic, tvSlot, tvClass, tvCourse;
     ListView lvStudents;
     SlotManagement slotManagement;
     Button btnTakeAttendance;
+
+    private GetSlotDetailResponse response;
+    private String stringDate;
+    private Slot slot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,27 +47,27 @@ public class SlotDetailActivity extends Activity implements View.OnClickListener
         btnTakeAttendance = findViewById(R.id.btnTakeAttendance);
 
         Intent intent = this.getIntent();
-        String stringDate = intent.getStringExtra("StringDate");
-        Slot slot = (Slot)intent.getSerializableExtra("Slot");
-        Course course = (Course)intent.getSerializableExtra("Course");
-        Classes classes = (Classes)intent.getSerializableExtra("Class");
+        stringDate = intent.getStringExtra("StringDate");
+        slot = (Slot) intent.getSerializableExtra("Slot");
+        Course course = (Course) intent.getSerializableExtra("Course");
+        Classes classes = (Classes) intent.getSerializableExtra("Class");
 
         //Slot 1 (7h30 - 9h00)
-        tvSlot.setText("Slot: "+ slot.getSlotId()+ "  (" + slot.getStartTime()+ " - "+slot.getEndTime()+")");
+        tvSlot.setText("Slot: " + slot.getSlotId() + "  (" + slot.getStartTime() + " - " + slot.getEndTime() + ")");
         //Class: IS1101
-        tvClass.setText("Class: "+classes.getClassName());
+        tvClass.setText("Class: " + classes.getClassName());
         //Subject: PRM391 - Mobile Programming
-        tvCourse.setText("Subject: "+course.getCourseName());
+        tvCourse.setText("Subject: " + course.getCourseName());
 
         slotManagement.getSlotDetail(new IVolleyJsonCallback() {
             @Override
             public void onJsonRequestSucess(JSONObject result) {
                 Gson gson = new Gson();
                 String resultInString = result.toString();
-                GetSlotDetailResponse response = gson.fromJson(resultInString,GetSlotDetailResponse.class);
+                response = gson.fromJson(resultInString, GetSlotDetailResponse.class);
                 lvStudents.setAdapter(new CustomStudentsAdapter(getApplicationContext(), response.getStudents()));
             }
-        },stringDate, slot.getSlotId(), classes.getClassId());
+        }, stringDate, slot.getSlotId(), classes.getClassId());
 
         Toast.makeText(getApplicationContext(), stringDate + " " + slot.getSlotId() + " " + classes.getClassId(), Toast.LENGTH_SHORT).show();
 
@@ -74,6 +81,10 @@ public class SlotDetailActivity extends Activity implements View.OnClickListener
         switch (view.getId()) {
             case R.id.btnTakeAttendance:
                 Intent takeAttendanceIntent = new Intent(getApplicationContext(), TakeAttendanceActivity.class);
+                ArrayList<StudentAttendance> studentAttendances = new ArrayList<>(response.getStudents());
+                takeAttendanceIntent.putParcelableArrayListExtra("studentListWithAttendance", studentAttendances);
+                takeAttendanceIntent.putExtra("slotId", slot.getSlotId());
+                takeAttendanceIntent.putExtra("date", stringDate);
                 startActivity(takeAttendanceIntent);
                 break;
         }

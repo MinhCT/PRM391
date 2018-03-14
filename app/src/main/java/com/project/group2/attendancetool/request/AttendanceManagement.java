@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.project.group2.attendancetool.enums.ELogTag;
 import com.project.group2.attendancetool.enums.EWebApiEndpoints;
 import com.project.group2.attendancetool.helper.EncodeVolleyBody;
@@ -306,6 +307,39 @@ public class AttendanceManagement {
         };
 
         // Send request to the server
+        requestQueue.add(postRequest);
+    }
+
+
+    /**
+     * Call the web service to send attendance images to mark attendance
+     *
+     * @param callback - callback target to send response content to
+     * @param jsonObject - the json object to request to web service
+     */
+    public void submitAttendanceImages(final IVolleyCallback callback, JSONObject jsonObject) {
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        final int[] statusCode = new int[1];
+        JsonObjectRequest postRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                EWebApiEndpoints.TAKE_ATTENDANCE_IMAGES_ENDPOINT.toString(),
+                jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if (statusCode[0] == 200) {
+                            callback.onSuccess(response.toString());
+                        }
+                    }
+                },
+                createErrorResponseListener()
+        ){
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                statusCode[0] = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
         requestQueue.add(postRequest);
     }
 

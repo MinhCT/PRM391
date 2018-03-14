@@ -45,4 +45,6 @@
                         ]]></string>
     <string name="notification_edit_attendance_string">Edit</string>
     <string name="notification_decline_attendance_string">Decline</string>
+    <string name="take_attendance_submit_images_text">Submit Images</string>
+    <string name="take_attendance_submit_manual_text">Submit Manual</string>
 </resources>

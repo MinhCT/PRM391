@@ -12,7 +12,8 @@ public enum EWebApiEndpoints {
     LOAD_SLOT_LIST_ENDPOINT("api/SlotManagement/GetSlotByTeacher"),
     LOAD_SLOT_DETAIL_ENDPOINT("api/SlotManagement/GetSlotDetail"),
     LOAD_NOTIFICATION_ENDPOINT("api/Notification/GetNotificationsByTeacherId"),
-    DECLINE_ATTENDANCE_ENDPOINT("api/AttendanceReport/DeclineAttendanceByTeacher");
+    DECLINE_ATTENDANCE_ENDPOINT("api/AttendanceReport/DeclineAttendanceByTeacher"),
+    TAKE_ATTENDANCE_IMAGES_ENDPOINT("api/AttendanceManagement/TakeAttendanceByImage");
 
     private final String HOST_URL = "http://10.0.2.2:58262/";
 
