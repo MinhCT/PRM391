@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.project.group2.attendancetool.R;
@@ -248,7 +249,7 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         attendanceManagement.submitAttendanceImages(new IVolleyCallback() {
             @Override
             public void onSuccess(String result) {
-
+                Toast.makeText(getApplicationContext(), "Attendances Submitted Successfully", Toast.LENGTH_SHORT).show();
             }
         }, buildTakeAttendanceJSONObjectRequest());
     }
@@ -275,7 +276,7 @@ public class TakeAttendanceActivity extends AppCompatActivity {
                 imageUrls,
                 "IS1101",
                 slotId,
-                "2018-02-05"
+                date
         );
 
         JsonObjectConverter<AttendanceRequest> converter = new JsonObjectConverter<>();

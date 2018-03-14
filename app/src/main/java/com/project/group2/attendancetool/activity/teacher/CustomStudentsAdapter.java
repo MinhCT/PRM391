@@ -70,7 +70,7 @@ public class CustomStudentsAdapter extends BaseAdapter {
         holder.ivAvatar.setImageBitmap(Base64Coverter.toImageBitmap(studentAttendance.getImage()));
         holder.tvName.setText(studentAttendance.getFullName());
         holder.tvStatus.setText(studentAttendance.getAttendanceStatus());
-        if(studentAttendance.getAttendanceStatus().equalsIgnoreCase(Constants.AttendanceStatus.PRESENT)){
+        if(studentAttendance.getAttendanceStatus().equalsIgnoreCase(Constants.AttendanceStatus.PRESENTED)){
             holder.tvStatus.setTextColor(Color.parseColor("#42f46f"));  //set color green for Present Status
         } else if(studentAttendance.getAttendanceStatus().equalsIgnoreCase(Constants.AttendanceStatus.ABSENT)){
             holder.tvStatus.setTextColor(Color.parseColor("#F44336"));  //set color red for Absent Status
