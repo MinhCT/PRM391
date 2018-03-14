@@ -1,6 +1,7 @@
 package com.project.group2.attendancetool.activity.teacher;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.project.group2.attendancetool.R;
 import com.project.group2.attendancetool.helper.DecodeBase64;
 import com.project.group2.attendancetool.model.StudentAttendance;
+import com.project.group2.attendancetool.utils.Constants;
 
 import java.util.List;
 
@@ -68,6 +70,11 @@ public class CustomStudentsAdapter extends BaseAdapter {
         holder.ivAvatar.setImageBitmap(DecodeBase64.toImageBitmap(studentAttendance.getImage()));
         holder.tvName.setText(studentAttendance.getFullName());
         holder.tvStatus.setText(studentAttendance.getAttendanceStatus());
+        if(studentAttendance.getAttendanceStatus().equalsIgnoreCase(Constants.AttendanceStatus.PRESENT)){
+            holder.tvStatus.setTextColor(Color.parseColor("#42f46f"));  //set color green for Present Status
+        } else if(studentAttendance.getAttendanceStatus().equalsIgnoreCase(Constants.AttendanceStatus.ABSENT)){
+            holder.tvStatus.setTextColor(Color.parseColor("#F44336"));  //set color red for Absent Status
+        }
         return view;
     }
 }

@@ -7,7 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.project.group2.attendancetool.R;
@@ -33,6 +37,8 @@ import java.util.List;
 public class SlotListFragment extends Fragment {
     private AttendanceManagement attendanceManagement;
     ListView lvSlotList;
+    Spinner spDate;
+    private List<String> dateToChoose;
 
     public SlotListFragment() {
         // Required empty public constructor
@@ -42,19 +48,53 @@ public class SlotListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         attendanceManagement = new AttendanceManagement(this.getContext());
         lvSlotList = (ListView)getView().findViewById(R.id.lvSlotList);
+        spDate = (Spinner) getView().findViewById(R.id.spDate);
+
+        List<String> dateToAdd = new ArrayList<>();
         Date date = new Date();
+        Date yesterday = new Date();
+        Date beforeYesterday = new Date();
+        yesterday.setDate(date.getDate()-1);
+        beforeYesterday.setDate(yesterday.getDate()-1);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        final String stringDate = formatter.format(date);
-        attendanceManagement.getSlotList(new IVolleyJsonCallback() {
+        dateToAdd.add(formatter.format(date));
+        dateToAdd.add(formatter.format(yesterday));
+        dateToAdd.add(formatter.format(beforeYesterday));
+        loadDateToSpinner(dateToAdd);
+
+        spDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onJsonRequestSucess(JSONObject result) {
-                Gson gson = new Gson();
-                String resultInString = result.toString();
-                GetTermByTeacherResponse response = gson.fromJson(resultInString,GetTermByTeacherResponse.class);
-                lvSlotList.setAdapter(new CustomListAdapter(getContext(), response.getSlotInformationList(), stringDate));
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                final String choosingDate = (String)adapterView.getItemAtPosition(i);
+                attendanceManagement.getSlotList(new IVolleyJsonCallback() {
+                    @Override
+                    public void onJsonRequestSucess(JSONObject result) {
+                        Gson gson = new Gson();
+                        String resultInString = result.toString();
+                        GetTermByTeacherResponse response = gson.fromJson(resultInString,GetTermByTeacherResponse.class);
+                        lvSlotList.setAdapter(new CustomListAdapter(getContext(), response.getSlotInformationList(), choosingDate));
+                    }
+                }, choosingDate);
             }
-        }, stringDate);
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Toast.makeText(getContext(),"nothing selected",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void loadDateToSpinner(List<String> stringDates) {
+        dateToChoose = new ArrayList<>();
+        List<String> termNameList = new ArrayList<>();
+        for (String date : stringDates) {
+            dateToChoose.add(date);
+        }
+        ArrayAdapter<String> dateSpinnerAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, dateToChoose);
+        spDate.setAdapter(dateSpinnerAdapter);
     }
 
     @Override

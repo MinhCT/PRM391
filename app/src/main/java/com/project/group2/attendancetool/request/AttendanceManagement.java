@@ -220,7 +220,7 @@ public class AttendanceManagement {
         JSONObject jsonObject = new JSONObject();
 
         try{
-            jsonObject.put("Date", "2018-02-05"); //set for value date
+            jsonObject.put("Date", date); //set for value date
             jsonObject.put("UserId", "AnhBN");//used in shared preference
             jsonObject.put("RoleName", "teacher");//used in shared preference
             jsonArray.put(jsonObject);
