@@ -31,6 +31,7 @@ import com.project.group2.attendancetool.interfaces.IVolleyCallback;
 import com.project.group2.attendancetool.model.AttendanceRequest;
 import com.project.group2.attendancetool.model.StudentAttendance;
 import com.project.group2.attendancetool.request.AttendanceManagement;
+import com.project.group2.attendancetool.response.TakeAttendanceByImageResponse;
 import com.sangcomz.fishbun.FishBun;
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter;
 import com.sangcomz.fishbun.define.Define;
@@ -52,6 +53,8 @@ public class TakeAttendanceActivity extends AppCompatActivity {
     private int shortAnimationDuration;
     private ArrayList<Uri> selectedImagesPaths;
     private ArrayList<Bitmap> selectedImageBitmaps;
+    private ArrayList<StudentAttendance> studentAttendances;
+    private TakeAttendanceByImageResponse response;
 
     @BindView(R.id.ivAttendanceImg1)
     ImageView ivAttendanceImg1;
@@ -79,7 +82,7 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        ArrayList<StudentAttendance> studentAttendances = intent.getParcelableArrayListExtra("studentListWithAttendance");
+        studentAttendances = intent.getParcelableArrayListExtra("studentListWithAttendance");
         lvStudentWithAttendances.setAdapter(new StudentListWithCheckboxAdapter(studentAttendances, this));
     }
 
@@ -250,6 +253,11 @@ public class TakeAttendanceActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 Toast.makeText(getApplicationContext(), "Attendances Submitted Successfully", Toast.LENGTH_SHORT).show();
+                Gson gson = new Gson();
+                response = gson.fromJson(result, TakeAttendanceByImageResponse.class);
+                ArrayList<StudentAttendance> studentAttendances = new ArrayList<>(response.getStudents());
+                lvStudentWithAttendances.setAdapter(null);
+                lvStudentWithAttendances.setAdapter(new StudentListWithCheckboxAdapter(studentAttendances, getApplicationContext()));
             }
         }, buildTakeAttendanceJSONObjectRequest());
     }
@@ -271,8 +279,8 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         imageUrls.add(base64ImageStrings[1]);
         imageUrls.add(base64ImageStrings[2]);
         AttendanceRequest attendanceRequest = new AttendanceRequest(
-                userInfoPreferences.getString("userId", null),
-                userInfoPreferences.getString("userRole", null),
+                "AnhBN", //userInfoPreferences.getString("userId", null)
+                "teacher", //userInfoPreferences.getString("userRole", null)
                 imageUrls,
                 "IS1101",
                 slotId,
