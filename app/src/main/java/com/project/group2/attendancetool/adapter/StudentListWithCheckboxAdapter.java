@@ -65,17 +65,17 @@ public class StudentListWithCheckboxAdapter extends ArrayAdapter<StudentAttendan
         }
         holder.ivStudentImage.setImageBitmap(Base64Coverter.toImageBitmap(studentAttendance.getImage()));
         holder.tvStudentName.setText(studentAttendance.getFullName());
-        if (studentAttendance.getAttendanceStatus().equalsIgnoreCase(Constants.AttendanceStatus.PRESENTED)) {
-            holder.cbAttendanceStatus.setChecked(true);
-        } else {
-            holder.cbAttendanceStatus.setChecked(false);
-        }
+        holder.cbAttendanceStatus.setChecked(Constants.AttendanceStatus.PRESENTED.equalsIgnoreCase(studentAttendance.getAttendanceStatus()) ? true : false);
+//        if (studentAttendance.getAttendanceStatus().equalsIgnoreCase(Constants.AttendanceStatus.PRESENTED)) {
+//            holder.cbAttendanceStatus.setChecked(true);
+//        } else {
+//            holder.cbAttendanceStatus.setChecked(false);
+//        }
 
         holder.cbAttendanceStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) studentAttendance.setAttendanceStatus(Constants.AttendanceStatus.PRESENTED);
-                studentAttendance.setAttendanceStatus(Constants.AttendanceStatus.ABSENT);
+                studentAttendance.setAttendanceStatus(b ? Constants.AttendanceStatus.PRESENTED : Constants.AttendanceStatus.ABSENT);
             }
         });
 

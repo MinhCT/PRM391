@@ -1,13 +1,104 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.project.group2.attendancetool.activity.teacher.Fragments.ScheduleFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Spinner
+        android:id="@+id/spTerm"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="15dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Schedule" />
+        android:layout_height="wrap_content"></Spinner>
 
-</FrameLayout>
+    <Spinner
+        android:id="@+id/spCourse"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></Spinner>
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:stretchColumns="1">
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite">
+
+            <!-- Column 1 -->
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_height="wrap_content"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:padding="2dp"
+                android:background="@drawable/cell_shape"
+                android:text="Day" />
+
+            <!-- Column 2 -->
+            <TextView
+                android:id="@+id/textView2"
+                android:background="@drawable/cell_shape"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:text="Slot" />
+
+            <!-- Column 3 -->
+            <TextView
+                android:id="@+id/textView3"
+                android:background="@drawable/cell_shape"
+                android:padding="2dp"
+                android:layout_height="wrap_content"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:text="Lecturer" />
+
+
+
+            <TextView
+                android:id="@+id/textView4"
+                android:background="@drawable/cell_shape"
+                android:padding="2dp"
+                android:layout_height="wrap_content"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:text="Class" />
+
+
+
+            <TextView
+                android:id="@+id/textView5"
+                android:background="@drawable/cell_shape"
+                android:padding="2dp"
+                android:layout_height="wrap_content"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:text="Status" />
+        </TableRow>
+
+        <!-- more rows
+        <TableRow ... </TableRow>
+        -->
+    </TableLayout>
+
+    <TableLayout
+        android:id="@+id/tbLayoutTeacherSchedule"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*">
+    </TableLayout>
+
+</LinearLayout>

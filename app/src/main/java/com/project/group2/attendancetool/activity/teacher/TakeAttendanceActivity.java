@@ -292,12 +292,13 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         attendanceManagement.submitAttendanceImages(new IVolleyCallback() {
             @Override
             public void onSuccess(String result) {
-                Toast.makeText(getApplicationContext(), "Attendances Submitted Successfully", Toast.LENGTH_SHORT).show();
                 Intent slotDetailIntent = new Intent(getApplicationContext(), SlotDetailActivity.class);
                 slotDetailIntent.putExtra("StringDate",stringDate);
                 slotDetailIntent.putExtra("Slot",slot);
                 slotDetailIntent.putExtra("Class",classes);
                 slotDetailIntent.putExtra("Course", course);
+                Toast.makeText(getApplicationContext(), "Attendances Submitted Successfully", Toast.LENGTH_SHORT).show();
+                finish();
                 startActivity(slotDetailIntent);
             }
         }, buildTakeAttendanceImageJSONObjectRequest());
