@@ -20,11 +20,14 @@ import com.project.group2.attendancetool.enums.EWebApiEndpoints;
 import com.project.group2.attendancetool.helper.EncodeVolleyBody;
 import com.project.group2.attendancetool.interfaces.IVolleyCallback;
 import com.project.group2.attendancetool.interfaces.IVolleyJsonCallback;
+import com.project.group2.attendancetool.model.StudentAttendance;
+import com.project.group2.attendancetool.model.TakeAttendanceManuallyRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -323,6 +326,32 @@ public class AttendanceManagement {
         JsonObjectRequest postRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 EWebApiEndpoints.TAKE_ATTENDANCE_IMAGES_ENDPOINT.toString(),
+                jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if (statusCode[0] == 200) {
+                            callback.onSuccess(response.toString());
+                        }
+                    }
+                },
+                createErrorResponseListener()
+        ){
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                statusCode[0] = response.statusCode;
+                return super.parseNetworkResponse(response);
+            }
+        };
+        requestQueue.add(postRequest);
+    }
+
+    public void submitManualAttendance(final IVolleyCallback callback, JSONObject jsonObject){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        final int[] statusCode = new int[1];
+        JsonObjectRequest postRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                EWebApiEndpoints.TAKE_ATTENDANCE_MANUALLY_ENDPOINT.toString(),
                 jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override

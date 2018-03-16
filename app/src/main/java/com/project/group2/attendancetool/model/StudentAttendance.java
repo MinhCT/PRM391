@@ -16,6 +16,8 @@ public class StudentAttendance extends Student implements Parcelable {
 
     public StudentAttendance(Parcel in) {
         super();
+        setStudentId(in.readString());
+        setEmail(in.readString());
         setFullName(in.readString());
         setImage(in.readString());
         AttendanceStatus = in.readString();
@@ -49,6 +51,8 @@ public class StudentAttendance extends Student implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(getStudentId());
+        parcel.writeString(getEmail());
         parcel.writeString(getFullName());
         parcel.writeString(getImage());
         parcel.writeString(AttendanceStatus);

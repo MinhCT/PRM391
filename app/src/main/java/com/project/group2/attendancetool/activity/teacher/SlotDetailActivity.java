@@ -33,6 +33,8 @@ public class SlotDetailActivity extends Activity implements View.OnClickListener
     private GetSlotDetailResponse response;
     private String stringDate;
     private Slot slot;
+    private Course course;
+    private Classes classes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +51,8 @@ public class SlotDetailActivity extends Activity implements View.OnClickListener
         Intent intent = this.getIntent();
         stringDate = intent.getStringExtra("StringDate");
         slot = (Slot) intent.getSerializableExtra("Slot");
-        Course course = (Course) intent.getSerializableExtra("Course");
-        Classes classes = (Classes) intent.getSerializableExtra("Class");
+        course = (Course) intent.getSerializableExtra("Course");
+        classes = (Classes) intent.getSerializableExtra("Class");
 
         //Slot 1 (7h30 - 9h00)
         tvSlot.setText("Slot: " + slot.getSlotId() + "  (" + slot.getStartTime() + " - " + slot.getEndTime() + ")");
@@ -83,8 +85,10 @@ public class SlotDetailActivity extends Activity implements View.OnClickListener
                 Intent takeAttendanceIntent = new Intent(getApplicationContext(), TakeAttendanceActivity.class);
                 ArrayList<StudentAttendance> studentAttendances = new ArrayList<>(response.getStudents());
                 takeAttendanceIntent.putParcelableArrayListExtra("studentListWithAttendance", studentAttendances);
-                takeAttendanceIntent.putExtra("slotId", slot.getSlotId());
-                takeAttendanceIntent.putExtra("date", stringDate);
+                takeAttendanceIntent.putExtra("Slot", slot);
+                takeAttendanceIntent.putExtra("StringDate", stringDate);
+                takeAttendanceIntent.putExtra("Course",course);
+                takeAttendanceIntent.putExtra("Classes",classes);
                 startActivity(takeAttendanceIntent);
                 break;
         }
