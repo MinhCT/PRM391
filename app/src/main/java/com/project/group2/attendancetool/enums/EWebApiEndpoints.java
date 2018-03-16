@@ -15,7 +15,7 @@ public enum EWebApiEndpoints {
     DECLINE_ATTENDANCE_ENDPOINT("api/AttendanceReport/DeclineAttendanceByTeacher"),
     TAKE_ATTENDANCE_IMAGES_ENDPOINT("api/AttendanceManagement/TakeAttendanceByImage");
 
-    private final String HOST_URL = "http://10.0.2.2:58262/";
+    private final String HOST_URL = "http://192.168.1.6:58262/";
 
     private String fullEndpoint;
 

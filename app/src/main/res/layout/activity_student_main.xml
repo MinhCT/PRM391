@@ -55,9 +55,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/linearLayout"
-            android:stretchColumns="*">
+            android:stretchColumns="*"
+            android:background="@color/header_color">
 
-            <TableRow android:background="@color/header_color">
+            <TableRow>
 
                 <TextView
                     android:layout_column="0"
@@ -100,7 +101,7 @@
                 android:id="@+id/tableLayoutStudentSchedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:stretchColumns="*"></TableLayout>
+                android:stretchColumns="*"/>
         </ScrollView>
 
     </RelativeLayout>

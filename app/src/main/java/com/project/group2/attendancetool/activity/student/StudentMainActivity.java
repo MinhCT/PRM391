@@ -51,10 +51,10 @@ public class StudentMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main);
-        attendanceManagement = new AttendanceManagement(this);
 
         // Initialize controls and load all terms corresponding to this user whenever view is created
         setupUI();
+        attendanceManagement = new AttendanceManagement(this);
         attendanceManagement.getTerms(new IVolleyCallback() {
             @Override
             public void onSuccess(String result) {
@@ -75,13 +75,13 @@ public class StudentMainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedTermId = termIdList.get(i);
                 attendanceManagement.getCourses(new IVolleyCallback() {
-                               @Override
-                               public void onSuccess(String result) {
-                                   Gson gson = new Gson();
-                                   CourseResponse courseResponse = gson.fromJson(result, CourseResponse.class);
-                                   loadCourseToSpinner(courseResponse.getCourses());
-                               }
-                           }, selectedTermId
+                                                    @Override
+                                                    public void onSuccess(String result) {
+                                                        Gson gson = new Gson();
+                                                        CourseResponse courseResponse = gson.fromJson(result, CourseResponse.class);
+                                                        loadCourseToSpinner(courseResponse.getCourses());
+                                                    }
+                                                }, selectedTermId
                 );
             }
 
@@ -151,10 +151,9 @@ public class StudentMainActivity extends AppCompatActivity {
      */
     private void loadStudentScheduleTable(List<Schedule> scheduleList) {
         tableLayoutStudentSchedule.removeAllViews(); // Clear old data rows
-        for (Schedule schedule : scheduleList) {
+        for (final Schedule schedule : scheduleList) {
             final TableRow scheduleRow = new TableRow(this);
             scheduleRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            scheduleRow.setTag(schedule.getSchduleId());
 
             TableRow.LayoutParams eachCellLayout = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
 
@@ -200,8 +199,9 @@ public class StudentMainActivity extends AppCompatActivity {
                             public void onSuccess(String result) {
                                 Toast.makeText(getApplicationContext(), "Your report has been sent successfully", Toast.LENGTH_SHORT).show();
                                 reportCell.setText("Reported");
+                                reportCell.setOnClickListener(null);
                             }
-                        }, Long.parseLong(scheduleRow.getTag().toString()));
+                        }, schedule.getScheduleId());
                     }
                 });
             }
