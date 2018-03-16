@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -94,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupUI() {
         ButterKnife.bind(this);
+        setGoogleLoginButtonText("Sign In With FPT Mail");
     }
 
     /**
@@ -210,5 +213,23 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         FirebaseMessaging.getInstance().subscribeToTopic("teacher_"
                 + userInfoPreferences.getString(Constants.UserInfoSharedPreferenceKey.USER_ID_KEY, ""));
+    }
+
+    /**
+     * Set text for Google Login Button
+     *
+     * @param buttonText - text to set in the Google Login Button
+     */
+    private void setGoogleLoginButtonText(String buttonText) {
+        // Find the TextView that is inside of the SignInButton and set its text
+        for (int i = 0; i < btnLogin.getChildCount(); i++) {
+            View v = btnLogin.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText(buttonText);
+                return;
+            }
+        }
     }
 }

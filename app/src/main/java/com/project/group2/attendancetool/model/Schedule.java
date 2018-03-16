@@ -14,8 +14,8 @@ public class Schedule {
     private String ReportStatus;
     private String AttendanceSummary;
 
-    public Schedule(long schduleId, String day, int slotNo, String teacherId, String room, String classId, String attendanceStatus, String reportStatus, String attendanceSummary) {
-        ScheduleId = schduleId;
+    public Schedule(long scheduleId, String day, int slotNo, String teacherId, String room, String classId, String attendanceStatus, String reportStatus, String attendanceSummary) {
+        ScheduleId = scheduleId;
         Date = day;
         SlotNo = slotNo;
         TeacherId = teacherId;

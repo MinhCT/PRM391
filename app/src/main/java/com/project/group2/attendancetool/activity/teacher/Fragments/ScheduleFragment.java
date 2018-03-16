@@ -106,7 +106,7 @@ public class ScheduleFragment extends Fragment {
         for (Schedule schedule : scheduleList) {
             final TableRow scheduleRow = new TableRow(getContext());
             scheduleRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            scheduleRow.setTag(schedule.getSchduleId());
+            scheduleRow.setTag(schedule.getScheduleId());
 
             TableRow.LayoutParams eachCellLayout = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,  TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
             eachCellLayout.setMargins(10,0,0,10);
