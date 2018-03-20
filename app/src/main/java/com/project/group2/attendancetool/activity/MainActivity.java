@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -61,6 +63,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setupSignInClient();
         setupUI();
+        btnLogin.setColorScheme(SignInButton.COLOR_LIGHT);
+        for (int i = 0; i < btnLogin.getChildCount(); i++) {
+            View v = btnLogin.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText("Sign in with Google Account");
+                return;
+            }
+        }
     }
 
     @Override
