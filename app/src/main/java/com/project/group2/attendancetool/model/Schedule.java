@@ -4,7 +4,7 @@ package com.project.group2.attendancetool.model;
  * Model class for storing data of user's schedule
  */
 public class Schedule {
-    private long SchduleId;
+    private long ScheduleId;
     private String Date;
     private int SlotNo;
     private String TeacherId;
@@ -14,8 +14,8 @@ public class Schedule {
     private String ReportStatus;
     private String AttendanceSummary;
 
-    public Schedule(long schduleId, String day, int slotNo, String teacherId, String room, String classId, String attendanceStatus, String reportStatus, String attendanceSummary) {
-        SchduleId = schduleId;
+    public Schedule(long scheduleId, String day, int slotNo, String teacherId, String room, String classId, String attendanceStatus, String reportStatus, String attendanceSummary) {
+        ScheduleId = scheduleId;
         Date = day;
         SlotNo = slotNo;
         TeacherId = teacherId;
@@ -26,8 +26,8 @@ public class Schedule {
         AttendanceSummary = attendanceSummary;
     }
 
-    public long getSchduleId() {
-        return SchduleId;
+    public long getScheduleId() {
+        return ScheduleId;
     }
 
     public String getDate() {

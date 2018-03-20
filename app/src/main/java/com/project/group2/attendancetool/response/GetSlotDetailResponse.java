@@ -12,6 +12,7 @@ import java.util.List;
 public class GetSlotDetailResponse {
     private SlotInformation SlotInformation;
     private List<StudentAttendance> Students;
+    private int AttendedStudents;
 
     public com.project.group2.attendancetool.model.SlotInformation getSlotInformation() {
         return SlotInformation;
@@ -19,5 +20,9 @@ public class GetSlotDetailResponse {
 
     public List<StudentAttendance> getStudents() {
         return Students;
+    }
+
+    public int getAttendedStudents() {
+        return AttendedStudents;
     }
 }

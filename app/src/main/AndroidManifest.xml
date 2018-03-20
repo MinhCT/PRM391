@@ -16,11 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.student.StudentMainActivity"
@@ -30,9 +26,14 @@
             android:name=".activity.teacher.TeacherMainActivity"
             android:label="@string/title_activity_teacher_main"
             android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".activity.teacher.SlotDetailActivity" />
+        <activity android:name=".activity.teacher.SlotDetailActivity"
+            android:parentActivityName=".activity.teacher.TeacherMainActivity"></activity>
 
         <!-- [START firebase_service] -->
         <service android:name=".services.FirebaseMessageReceiverService">

@@ -3,6 +3,7 @@ package com.project.group2.attendancetool.activity.teacher;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
@@ -24,12 +25,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SlotDetailActivity extends Activity implements View.OnClickListener {
+public class SlotDetailActivity extends AppCompatActivity implements View.OnClickListener {
     TextView tvAttendanceStatistic, tvSlot, tvClass, tvCourse;
     ListView lvStudents;
     SlotManagement slotManagement;
     Button btnTakeAttendance;
 
+    private int totalStudents, attendedStudents;
     private GetSlotDetailResponse response;
     private String stringDate;
     private Slot slot;
@@ -68,13 +70,14 @@ public class SlotDetailActivity extends Activity implements View.OnClickListener
                 String resultInString = result.toString();
                 response = gson.fromJson(resultInString, GetSlotDetailResponse.class);
                 lvStudents.setAdapter(new CustomStudentsAdapter(getApplicationContext(), response.getStudents()));
+                attendedStudents = response.getAttendedStudents();
+                totalStudents = response.getStudents().size();
+                tvAttendanceStatistic.setText("Attended Students: "+ attendedStudents + "/" + totalStudents);
+                tvAttendanceStatistic.setTextColor(getResources().getColor(R.color.colorPrimary));
             }
         }, stringDate, slot.getSlotId(), classes.getClassId());
 
         Toast.makeText(getApplicationContext(), stringDate + " " + slot.getSlotId() + " " + classes.getClassId(), Toast.LENGTH_SHORT).show();
-
-        tvAttendanceStatistic.setText(Html.fromHtml(getResources().getString(R.string.attendance_statistic_example)));
-
         btnTakeAttendance.setOnClickListener(this);
     }
 

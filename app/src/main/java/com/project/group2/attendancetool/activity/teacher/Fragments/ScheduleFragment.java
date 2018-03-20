@@ -14,7 +14,6 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.project.group2.attendancetool.R;
@@ -104,36 +103,43 @@ public class ScheduleFragment extends Fragment {
     private void loadStudentScheduleTable(List<Schedule> scheduleList) {
         tbLayoutTeacherSchedule.removeAllViews(); // Clear old data rows
         for (Schedule schedule : scheduleList) {
-            final TableRow scheduleRow = new TableRow(getContext());
-            scheduleRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            scheduleRow.setTag(schedule.getSchduleId());
+            TableRow scheduleRow = new TableRow(getContext());
+            scheduleRow.setTag(schedule.getScheduleId());
+            scheduleRow.setWeightSum(5f);
+            TableRow.LayoutParams rowLayout = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+            rowLayout.setMargins(10,0,10,0);
+            scheduleRow.setLayoutParams(rowLayout);
 
-            TableRow.LayoutParams eachCellLayout = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,  TableRow.LayoutParams.WRAP_CONTENT, 1.0f);
-            eachCellLayout.setMargins(10,0,0,10);
-
+            TableRow.LayoutParams eachCellLayout = new TableRow.LayoutParams(0,  TableRow.LayoutParams.WRAP_CONTENT);
+            eachCellLayout.weight = 1f;
             TextView dayCell = new TextView(getContext());
+            dayCell.setPadding(12,0,0,0);
             dayCell.setLayoutParams(eachCellLayout);
-            dayCell.setText(schedule.getDate());
+            dayCell.setText(schedule.getDate().trim());
 //            dayCell.setBackground(getResources().getDrawable(R.drawable.cell_shape_2));
 
             TextView slotCell = new TextView(getContext());
+            slotCell.setPadding(12,0,0,0);
             slotCell.setLayoutParams(eachCellLayout);
             slotCell.setText(String.valueOf(schedule.getSlotNo()));
 //            slotCell.setBackground(getResources().getDrawable(R.drawable.cell_shape_2));
 
             TextView lecturerCell = new TextView(getContext());
+            lecturerCell.setPadding(2,0,0,0);
             lecturerCell.setLayoutParams(eachCellLayout);
             lecturerCell.setText(schedule.getTeacherId());
 //            lecturerCell.setBackground(getResources().getDrawable(R.drawable.cell_shape_2));
 
             TextView classCell = new TextView(getContext());
+            classCell.setPadding(2,0,0,0);
             classCell.setLayoutParams(eachCellLayout);
             classCell.setText(schedule.getClassId());
 //            classCell.setBackground(getResources().getDrawable(R.drawable.cell_shape_2));
 
             TextView statusCell = new TextView(getContext());
+            statusCell.setPadding(2,0,0,0);
             statusCell.setLayoutParams(eachCellLayout);
-            statusCell.setText("");
+            statusCell.setText("6/7");
 //            statusCell.setBackground(getResources().getDrawable(R.drawable.cell_shape_2));
 
             scheduleRow.addView(dayCell, 0);
@@ -141,11 +147,6 @@ public class ScheduleFragment extends Fragment {
             scheduleRow.addView(lecturerCell, 2);
             scheduleRow.addView(classCell, 3);
             scheduleRow.addView(statusCell, 4);
-
-            final TextView reportCell = new TextView(getContext());
-            reportCell.setText(schedule.getReportStatus());
-
-            scheduleRow.addView(reportCell);
 
             // Add the row to the current table schedule
             tbLayoutTeacherSchedule.addView(scheduleRow);

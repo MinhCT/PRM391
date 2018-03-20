@@ -32,7 +32,8 @@
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/colorPrimary"
             android:textColor="@color/colorWhite">
 
@@ -97,8 +98,7 @@
     <TableLayout
         android:id="@+id/tbLayoutTeacherSchedule"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="*">
+        android:layout_height="wrap_content">
     </TableLayout>
 
 </LinearLayout>
