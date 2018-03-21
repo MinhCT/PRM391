@@ -9,6 +9,7 @@
     <string name="action_settings">Settings</string>
 
     <!-- Texts used in views -->
+    <string name="main_google_login_button_text">Sign In With FPT Mail</string>
     <string name="student_main_select_term_text">Select Term:</string>
     <string name="student_main_select_course_text">Select Course:</string>
     <string name="student_main_table_column_1_text">Day</string>

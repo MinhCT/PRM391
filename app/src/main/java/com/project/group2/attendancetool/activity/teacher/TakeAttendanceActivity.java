@@ -6,11 +6,9 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,13 +16,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.project.group2.attendancetool.R;
 import com.project.group2.attendancetool.adapter.StudentListWithCheckboxAdapter;
+import com.project.group2.attendancetool.database.AttendanceImageDbHelper;
+import com.project.group2.attendancetool.enums.ELogTag;
 import com.project.group2.attendancetool.helper.Base64Coverter;
 import com.project.group2.attendancetool.helper.JsonObjectConverter;
 import com.project.group2.attendancetool.interfaces.IVolleyCallback;
@@ -35,12 +35,11 @@ import com.project.group2.attendancetool.model.Slot;
 import com.project.group2.attendancetool.model.StudentAttendance;
 import com.project.group2.attendancetool.model.TakeAttendanceManuallyRequest;
 import com.project.group2.attendancetool.request.AttendanceManagement;
-import com.project.group2.attendancetool.response.TakeAttendanceByImageResponse;
+import com.project.group2.attendancetool.utils.Constants;
 import com.sangcomz.fishbun.FishBun;
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter;
 import com.sangcomz.fishbun.define.Define;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.json.JSONObject;
 
@@ -56,9 +55,7 @@ public class TakeAttendanceActivity extends AppCompatActivity {
     private Animator currentAnimator;
     private int shortAnimationDuration;
     private ArrayList<Uri> selectedImagesPaths;
-    private ArrayList<Bitmap> selectedImageBitmaps;
     private ArrayList<StudentAttendance> studentAttendances;
-    private TakeAttendanceByImageResponse response;
     private AttendanceManagement attendanceManagement;
     private StudentListWithCheckboxAdapter adapter;
 
@@ -66,7 +63,14 @@ public class TakeAttendanceActivity extends AppCompatActivity {
     private Classes classes;
     private Slot slot;
     private String stringDate;
+    private AttendanceImageDbHelper.AttendanceImageData imageData;
 
+    @BindView(R.id.btnSelectImages)
+    Button btnSelectImages;
+    @BindView(R.id.btnSubmitImages)
+    Button btnSubmitImages;
+    @BindView(R.id.btnOpenCamera)
+    Button btnOpenCamera;
     @BindView(R.id.ivAttendanceImg1)
     ImageView ivAttendanceImg1;
     @BindView(R.id.ivAttendanceImg2)
@@ -83,7 +87,8 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_attendance);
         setupUI();
-
+        if (isAttendanceSubmitted()) disableAttendanceImagesRelatedSubmissionButtons();
+        loadLocalAttendanceImageToView();
         attendanceManagement = new AttendanceManagement(this);
 
         // Retrieve and cache the system's default "short" animation time.
@@ -110,11 +115,14 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         switch (requestCode) {
             case Define.ALBUM_REQUEST_CODE:
                 selectedImagesPaths = data.getParcelableArrayListExtra(Define.INTENT_PATH);
-                selectedImageBitmaps = new ArrayList<>();
 
-                Picasso.with(this).load(selectedImagesPaths.get(0)).into(ivAttendanceImg1);
-                Picasso.with(this).load(selectedImagesPaths.get(1)).into(ivAttendanceImg2);
-                Picasso.with(this).load(selectedImagesPaths.get(2)).into(ivAttendanceImg3);
+                try {
+                    Picasso.with(this).load(selectedImagesPaths.get(0)).into(ivAttendanceImg1);
+                    Picasso.with(this).load(selectedImagesPaths.get(1)).into(ivAttendanceImg2);
+                    Picasso.with(this).load(selectedImagesPaths.get(2)).into(ivAttendanceImg3);
+                } catch (Exception ex) {
+                    Log.w(ELogTag.PICASSO_IMAGE_LOADING_ERROR.toString(), "Can not fully load all 3 images, perhaps user choose less than 3?");
+                }
                 break;
         }
     }
@@ -130,6 +138,8 @@ public class TakeAttendanceActivity extends AppCompatActivity {
 
     @OnClick({R.id.ivAttendanceImg1, R.id.ivAttendanceImg2, R.id.ivAttendanceImg3})
     void zoomImage(View thumbView) {
+        ivExpandedImage.setImageDrawable(null);
+
         // If there's an animation in progress, cancel it immediately and proceed with this one.
         if (currentAnimator != null) {
             currentAnimator.cancel();
@@ -253,29 +263,52 @@ public class TakeAttendanceActivity extends AppCompatActivity {
     private void loadZoomedInImage(View view) {
         switch (view.getId()) {
             case R.id.ivAttendanceImg1:
-                Picasso.with(this).load(selectedImagesPaths.get(0)).into(ivExpandedImage);
+                try {
+                    Picasso.with(this).load(selectedImagesPaths.get(0)).into(ivExpandedImage);
+                } catch (Exception ex) {
+                    try {
+                        Picasso.with(this).load(imageData.getLocalImgPathFirst()).into(ivExpandedImage);
+                    } catch (Exception e) {
+                        Log.w(ELogTag.PICASSO_IMAGE_LOADING_ERROR.toString(), "Can not fill zoomed image, maybe there is not an image at all");
+                    }
+                }
                 break;
             case R.id.ivAttendanceImg2:
-                Picasso.with(this).load(selectedImagesPaths.get(1)).into(ivExpandedImage);
+                try {
+                    Picasso.with(this).load(selectedImagesPaths.get(1)).into(ivExpandedImage);
+                } catch (Exception ex) {
+                    try {
+                        Picasso.with(this).load(imageData.getLocalImgPathSecond()).into(ivExpandedImage);
+                    } catch (Exception e) {
+                        Log.w(ELogTag.PICASSO_IMAGE_LOADING_ERROR.toString(), "Can not fill zoomed image, maybe there is not an image at all");
+                    }
+                }
                 break;
             case R.id.ivAttendanceImg3:
-                Picasso.with(this).load(selectedImagesPaths.get(2)).into(ivExpandedImage);
+                try {
+                    Picasso.with(this).load(selectedImagesPaths.get(2)).into(ivExpandedImage);
+                } catch (Exception ex) {
+                    try {
+                        Picasso.with(this).load(imageData.getLocalImgPathThird()).into(ivExpandedImage);
+                    } catch (Exception e) {
+                        Log.w(ELogTag.PICASSO_IMAGE_LOADING_ERROR.toString(), "Can not fill zoomed image, maybe there is not an image at all");
+                    }
+                }
                 break;
         }
     }
 
     @OnClick(R.id.btnSubmitManual)
-    void submitManual(){
+    void submitManual() {
         attendanceManagement.submitManualAttendance(new IVolleyCallback() {
             @Override
             public void onSuccess(String result) {
                 Toast.makeText(getApplicationContext(), "manual submit attend", Toast.LENGTH_SHORT).show();
             }
-        },buildTakeAttendanceManuallyJSONObject());
+        }, buildTakeAttendanceManuallyJSONObject());
     }
 
-    private JSONObject buildTakeAttendanceManuallyJSONObject(){
-
+    private JSONObject buildTakeAttendanceManuallyJSONObject() {
         TakeAttendanceManuallyRequest request = new TakeAttendanceManuallyRequest(
                 "AnhBN",
                 "teacher",
@@ -289,38 +322,50 @@ public class TakeAttendanceActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnSubmitImages)
     void submitImages() {
+        JSONObject jsonObjectRequest = buildTakeAttendanceImageJSONObjectRequest();
+        if (jsonObjectRequest == null) return;
         attendanceManagement.submitAttendanceImages(new IVolleyCallback() {
             @Override
             public void onSuccess(String result) {
                 Intent slotDetailIntent = new Intent(getApplicationContext(), SlotDetailActivity.class);
-                slotDetailIntent.putExtra("StringDate",stringDate);
-                slotDetailIntent.putExtra("Slot",slot);
-                slotDetailIntent.putExtra("Class",classes);
+                slotDetailIntent.putExtra("StringDate", stringDate);
+                slotDetailIntent.putExtra("Slot", slot);
+                slotDetailIntent.putExtra("Class", classes);
                 slotDetailIntent.putExtra("Course", course);
                 Toast.makeText(getApplicationContext(), "Attendances Submitted Successfully", Toast.LENGTH_SHORT).show();
+                storeSubmittedAttendanceImages();
+                disableAttendanceImagesRelatedSubmissionButtons();
                 finish();
                 startActivity(slotDetailIntent);
             }
-        }, buildTakeAttendanceImageJSONObjectRequest());
+        }, jsonObjectRequest);
     }
 
     private JSONObject buildTakeAttendanceImageJSONObjectRequest() {
-        String[] base64ImageStrings = new String[3];
-        Intent intent = getIntent();
+        String[] base64ImageStrings = {null, null, null};
         SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         List<String> imageUrls = new ArrayList<>();
 
-        base64ImageStrings[0] = Base64Coverter.toBase64(((BitmapDrawable)ivAttendanceImg1.getDrawable()).getBitmap());
-        base64ImageStrings[1] = Base64Coverter.toBase64(((BitmapDrawable)ivAttendanceImg2.getDrawable()).getBitmap());
-        base64ImageStrings[2] = Base64Coverter.toBase64(((BitmapDrawable)ivAttendanceImg3.getDrawable()).getBitmap());
+        try {
+            base64ImageStrings[0] = Base64Coverter.toBase64(((BitmapDrawable) ivAttendanceImg1.getDrawable()).getBitmap());
+            base64ImageStrings[1] = Base64Coverter.toBase64(((BitmapDrawable) ivAttendanceImg2.getDrawable()).getBitmap());
+            base64ImageStrings[2] = Base64Coverter.toBase64(((BitmapDrawable) ivAttendanceImg3.getDrawable()).getBitmap());
+        } catch (Exception ex) {
+            Log.w(ELogTag.GET_IMAGE_BITMAT_FROM_IMAGEVIEW_ERROR.toString(), "1 or 2 image views is empty, thus will be exclude when sending request to server");
+        }
+
+        if (base64ImageStrings[0] == null && base64ImageStrings[1] == null && base64ImageStrings[2] == null) {
+            Toast.makeText(this, "Please select at least 1 images before submitting", Toast.LENGTH_SHORT).show();
+            return null;
+        }
 
         // Create Object to ready to convert to JSONObject
         imageUrls.add(base64ImageStrings[0]);
         imageUrls.add(base64ImageStrings[1]);
         imageUrls.add(base64ImageStrings[2]);
         AttendanceRequest attendanceRequest = new AttendanceRequest(
-                "AnhBN", //userInfoPreferences.getString("userId", null)
-                "teacher", //userInfoPreferences.getString("userRole", null)
+                userInfoPreferences.getString("userId", null),
+                userInfoPreferences.getString("userRole", null),
                 imageUrls,
                 "IS1101",
                 slot.getSlotId(),
@@ -329,6 +374,79 @@ public class TakeAttendanceActivity extends AppCompatActivity {
 
         JsonObjectConverter<AttendanceRequest> converter = new JsonObjectConverter<>();
         return converter.toJsonObject(attendanceRequest);
+    }
+
+    private void storeSubmittedAttendanceImages() {
+        AttendanceImageDbHelper imageDbHelper = new AttendanceImageDbHelper(
+                this,
+                AttendanceImageDbHelper.DatabaseInfo.DB_NAME,
+                null,
+                AttendanceImageDbHelper.DatabaseInfo.DB_VERSION);
+        String teacherId = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.UserInfoSharedPreferenceKey.USER_ID_KEY, null);
+        if (teacherId == null) return;
+
+        String[] stringImgPaths = {null, null, null};
+        int counter = 0;
+        for (Uri uri : selectedImagesPaths) {
+            stringImgPaths[counter] = uri.toString();
+            counter++;
+        }
+
+        imageDbHelper.insertNewRow(new AttendanceImageDbHelper.AttendanceImageData(
+                teacherId,
+                slot.getSlotId(),
+                stringDate,
+                stringImgPaths[0],
+                stringImgPaths[1],
+                stringImgPaths[2]
+        ));
+    }
+
+    private void loadLocalAttendanceImageToView() {
+        AttendanceImageDbHelper imageDbHelper = new AttendanceImageDbHelper(
+                this,
+                AttendanceImageDbHelper.DatabaseInfo.DB_NAME,
+                null,
+                AttendanceImageDbHelper.DatabaseInfo.DB_VERSION
+        );
+
+        String teacherId = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.UserInfoSharedPreferenceKey.USER_ID_KEY, null);
+        if (teacherId == null) return;
+
+        AttendanceImageDbHelper.AttendanceImageData imageData = imageDbHelper.getRow(teacherId, stringDate, slot.getSlotId());
+
+        if (imageData == null) return;
+
+        if (imageData.getLocalImgPathFirst() != null) {
+            Picasso.with(this).load(imageData.getLocalImgPathFirst()).into(ivAttendanceImg1);
+        }
+        if (imageData.getLocalImgPathSecond() != null) {
+            Picasso.with(this).load(imageData.getLocalImgPathSecond()).into(ivAttendanceImg2);
+        }
+        if (imageData.getLocalImgPathThird() != null) {
+            Picasso.with(this).load(imageData.getLocalImgPathThird()).into(ivAttendanceImg3);
+        }
+    }
+
+    private boolean isAttendanceSubmitted() {
+        for (StudentAttendance studentAttendance : studentAttendances) {
+            if (studentAttendance.getAttendanceStatus().equalsIgnoreCase("not yet")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void disableAttendanceImagesRelatedSubmissionButtons() {
+        btnSelectImages.setEnabled(false);
+        btnSubmitImages.setEnabled(false);
+        btnOpenCamera.setEnabled(false);
+    }
+
+    @OnClick(R.id.btnOpenCamera)
+    void openCamera() {
+        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivity(intent);
     }
 }
 

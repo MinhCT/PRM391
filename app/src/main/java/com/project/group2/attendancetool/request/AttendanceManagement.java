@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -343,6 +344,10 @@ public class AttendanceManagement {
                 return super.parseNetworkResponse(response);
             }
         };
+        postRequest.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(postRequest);
     }
 

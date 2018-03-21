@@ -19,10 +19,10 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.project.group2.attendancetool.R;
+import com.project.group2.attendancetool.database.AttendanceImageDbHelper;
 import com.project.group2.attendancetool.interfaces.IVolleyCallback;
 import com.project.group2.attendancetool.model.UserInfo;
 import com.project.group2.attendancetool.activity.student.StudentMainActivity;
@@ -31,8 +31,6 @@ import com.project.group2.attendancetool.enums.ELogTag;
 import com.project.group2.attendancetool.enums.ERequestCode;
 import com.project.group2.attendancetool.request.LoginManagement;
 import com.project.group2.attendancetool.utils.Constants;
-
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setupSignInClient();
         setupUI();
+        createLocalSqliteDatabase();
     }
 
     @Override
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupUI() {
         ButterKnife.bind(this);
-        setGoogleLoginButtonText("Sign In With FPT Mail");
+        setGoogleLoginButtonText();
     }
 
     /**
@@ -155,12 +154,6 @@ public class MainActivity extends AppCompatActivity {
             Intent teacherIntent = new Intent(this, TeacherMainActivity.class);
             startActivity(teacherIntent);
         } else if (loginRole.equalsIgnoreCase("student")) {
-            FirebaseMessaging.getInstance().unsubscribeFromTopic("teacher_AnhBN");
-            try {
-                FirebaseInstanceId.getInstance().deleteInstanceId();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             Intent studentIntent = new Intent(this, StudentMainActivity.class);
             startActivity(studentIntent);
         }
@@ -217,19 +210,24 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Set text for Google Login Button
-     *
-     * @param buttonText - text to set in the Google Login Button
      */
-    private void setGoogleLoginButtonText(String buttonText) {
+    private void setGoogleLoginButtonText() {
         // Find the TextView that is inside of the SignInButton and set its text
         for (int i = 0; i < btnLogin.getChildCount(); i++) {
             View v = btnLogin.getChildAt(i);
 
             if (v instanceof TextView) {
                 TextView tv = (TextView) v;
-                tv.setText(buttonText);
+                tv.setText(getString(R.string.main_google_login_button_text));
                 return;
             }
         }
+    }
+
+    /**
+     * Create a local database for storing submitted attendance images
+     */
+    private void createLocalSqliteDatabase() {
+        new AttendanceImageDbHelper(this, AttendanceImageDbHelper.DatabaseInfo.DB_NAME, null, AttendanceImageDbHelper.DatabaseInfo.DB_VERSION);
     }
 }
