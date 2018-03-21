@@ -14,11 +14,14 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.project.group2.attendancetool.R;
@@ -58,6 +61,7 @@ public class TakeAttendanceActivity extends AppCompatActivity {
     private ArrayList<StudentAttendance> studentAttendances;
     private AttendanceManagement attendanceManagement;
     private StudentListWithCheckboxAdapter adapter;
+    private ProgressBar pbLoading;
 
     private Course course;
     private Classes classes;
@@ -98,7 +102,6 @@ public class TakeAttendanceActivity extends AppCompatActivity {
 
     private void setupUI() {
         ButterKnife.bind(this);
-
         Intent intent = getIntent();
         course = (Course) intent.getSerializableExtra("Course");
         classes = (Classes) intent.getSerializableExtra("Classes");
@@ -107,6 +110,8 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         studentAttendances = intent.getParcelableArrayListExtra("studentListWithAttendance");
         adapter = new StudentListWithCheckboxAdapter(studentAttendances, this);
         lvStudentWithAttendances.setAdapter(adapter);
+        pbLoading = findViewById(R.id.pbLoading);
+        pbLoading.setVisibility(View.GONE);
     }
 
     @Override
@@ -324,6 +329,9 @@ public class TakeAttendanceActivity extends AppCompatActivity {
     void submitImages() {
         JSONObject jsonObjectRequest = buildTakeAttendanceImageJSONObjectRequest();
         if (jsonObjectRequest == null) return;
+        pbLoading.setVisibility(View.VISIBLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         attendanceManagement.submitAttendanceImages(new IVolleyCallback() {
             @Override
             public void onSuccess(String result) {
@@ -332,9 +340,14 @@ public class TakeAttendanceActivity extends AppCompatActivity {
                 slotDetailIntent.putExtra("Slot", slot);
                 slotDetailIntent.putExtra("Class", classes);
                 slotDetailIntent.putExtra("Course", course);
+
                 Toast.makeText(getApplicationContext(), "Attendances Submitted Successfully", Toast.LENGTH_SHORT).show();
+
                 storeSubmittedAttendanceImages();
                 disableAttendanceImagesRelatedSubmissionButtons();
+
+                pbLoading.setVisibility(View.GONE);
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 finish();
                 startActivity(slotDetailIntent);
             }
