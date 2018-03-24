@@ -60,6 +60,7 @@
                     android:text="@string/teacher_select_images_from_gallery_button_text" />
 
                 <Button
+                    android:id="@+id/btnOpenCamera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"

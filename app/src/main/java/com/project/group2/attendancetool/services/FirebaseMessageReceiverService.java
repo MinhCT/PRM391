@@ -13,6 +13,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.project.group2.attendancetool.R;
 import com.project.group2.attendancetool.activity.MainActivity;
+import com.project.group2.attendancetool.activity.teacher.Fragments.NotificationFragment;
 
 /**
  * Service handle receiving messages from Firebase Cloud Messaging
@@ -20,22 +21,14 @@ import com.project.group2.attendancetool.activity.MainActivity;
 public class FirebaseMessageReceiverService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d("TestFirebase", "From: " + remoteMessage.getFrom());
-
-        // Check if message contains a data payload.
-        if (remoteMessage.getData().size() > 0) {
-            Log.d("TestFirebase", "Message data payload: " + remoteMessage.getData());
-        }
-
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Log.d("TestFirebase", "Message Notification Body: " + remoteMessage.getNotification().getBody());
             sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle());
         }
     }
 
     private void sendNotification(String messageBody, String messageTitle) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, NotificationFragment.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

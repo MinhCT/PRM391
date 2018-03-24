@@ -5,27 +5,19 @@ package com.project.group2.attendancetool.model;
  */
 public class Notification {
     private long ScheduleId;
-    private String ClassId;
+    private Classes Classes;
     private String StudentId;
-    private String CourseName;
-    private int SlotId;
+    private Course Course;
+    private Slot Slot;
     private String Date;
 
-    public Notification(long scheduleId, String classId, String studentId, String courseName, int slotId, String date) {
+    public Notification(long scheduleId, com.project.group2.attendancetool.model.Classes classes, String studentId, com.project.group2.attendancetool.model.Course course, com.project.group2.attendancetool.model.Slot slot, String date) {
         ScheduleId = scheduleId;
-        ClassId = classId;
+        Classes = classes;
         StudentId = studentId;
-        CourseName = courseName;
-        SlotId = slotId;
+        Course = course;
+        Slot = slot;
         Date = date;
-    }
-
-    public String getCourseName() {
-        return CourseName;
-    }
-
-    public void setCourseName(String courseName) {
-        CourseName = courseName;
     }
 
     public long getScheduleId() {
@@ -36,12 +28,12 @@ public class Notification {
         ScheduleId = scheduleId;
     }
 
-    public String getClassId() {
-        return ClassId;
+    public com.project.group2.attendancetool.model.Classes getClasses() {
+        return Classes;
     }
 
-    public void setClassId(String classId) {
-        ClassId = classId;
+    public void setClasses(com.project.group2.attendancetool.model.Classes classes) {
+        Classes = classes;
     }
 
     public String getStudentId() {
@@ -52,12 +44,20 @@ public class Notification {
         StudentId = studentId;
     }
 
-    public int getSlotId() {
-        return SlotId;
+    public com.project.group2.attendancetool.model.Course getCourse() {
+        return Course;
     }
 
-    public void setSlotId(int slotId) {
-        SlotId = slotId;
+    public void setCourse(com.project.group2.attendancetool.model.Course course) {
+        Course = course;
+    }
+
+    public com.project.group2.attendancetool.model.Slot getSlot() {
+        return Slot;
+    }
+
+    public void setSlot(com.project.group2.attendancetool.model.Slot slot) {
+        Slot = slot;
     }
 
     public String getDate() {
@@ -68,3 +68,4 @@ public class Notification {
         Date = date;
     }
 }
+

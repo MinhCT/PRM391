@@ -2,6 +2,7 @@ package com.project.group2.attendancetool.activity.teacher.Fragments;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -35,9 +36,8 @@ public class NotificationFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
@@ -46,7 +46,11 @@ public class NotificationFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        fetchNotificationsList();
+    }
+
+    private void fetchNotificationsList() {
         NotificationManagement notificationManagement = new NotificationManagement(getActivity());
         notificationManagement.getNotifications(new IVolleyCallback() {
             @Override

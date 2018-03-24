@@ -1,6 +1,9 @@
 package com.project.group2.attendancetool.request;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -74,6 +77,19 @@ public class LoginManagement {
             }
         };
         requestQueue.add(postRequest);
+    }
+
+    public void logout() {
+        SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(getCurrentContext());
+        SharedPreferences.Editor editor = userInfoPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+        // Return to login screen
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        getCurrentContext().startActivity(startMain);
     }
 
     public Context getCurrentContext() {
