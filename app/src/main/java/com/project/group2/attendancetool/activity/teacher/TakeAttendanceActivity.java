@@ -107,6 +107,7 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         classes = (Classes) intent.getSerializableExtra("Classes");
         slot = (Slot) intent.getSerializableExtra("Slot");
         stringDate = intent.getStringExtra("StringDate");
+
         studentAttendances = intent.getParcelableArrayListExtra("studentListWithAttendance");
         adapter = new StudentListWithCheckboxAdapter(studentAttendances, this);
         lvStudentWithAttendances.setAdapter(adapter);
@@ -308,7 +309,8 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         attendanceManagement.submitManualAttendance(new IVolleyCallback() {
             @Override
             public void onSuccess(String result) {
-                Toast.makeText(getApplicationContext(), "manual submit attend", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Manually submit attendance successfully", Toast.LENGTH_SHORT).show();
+                disableAttendanceImagesRelatedSubmissionButtons();
             }
         }, buildTakeAttendanceManuallyJSONObject());
     }
@@ -355,27 +357,23 @@ public class TakeAttendanceActivity extends AppCompatActivity {
     }
 
     private JSONObject buildTakeAttendanceImageJSONObjectRequest() {
-        String[] base64ImageStrings = {null, null, null};
-        SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         List<String> imageUrls = new ArrayList<>();
+        SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         try {
-            base64ImageStrings[0] = Base64Coverter.toBase64(((BitmapDrawable) ivAttendanceImg1.getDrawable()).getBitmap());
-            base64ImageStrings[1] = Base64Coverter.toBase64(((BitmapDrawable) ivAttendanceImg2.getDrawable()).getBitmap());
-            base64ImageStrings[2] = Base64Coverter.toBase64(((BitmapDrawable) ivAttendanceImg3.getDrawable()).getBitmap());
+            imageUrls.add(Base64Coverter.toBase64(((BitmapDrawable) ivAttendanceImg1.getDrawable()).getBitmap()));
+            imageUrls.add(Base64Coverter.toBase64(((BitmapDrawable) ivAttendanceImg2.getDrawable()).getBitmap()));
+            imageUrls.add(Base64Coverter.toBase64(((BitmapDrawable) ivAttendanceImg3.getDrawable()).getBitmap()));
         } catch (Exception ex) {
             Log.w(ELogTag.GET_IMAGE_BITMAT_FROM_IMAGEVIEW_ERROR.toString(), "1 or 2 image views is empty, thus will be exclude when sending request to server");
         }
 
-        if (base64ImageStrings[0] == null && base64ImageStrings[1] == null && base64ImageStrings[2] == null) {
+        if (imageUrls.size() == 0) {
             Toast.makeText(this, "Please select at least 1 images before submitting", Toast.LENGTH_SHORT).show();
             return null;
         }
 
         // Create Object to ready to convert to JSONObject
-        imageUrls.add(base64ImageStrings[0]);
-        imageUrls.add(base64ImageStrings[1]);
-        imageUrls.add(base64ImageStrings[2]);
         AttendanceRequest attendanceRequest = new AttendanceRequest(
                 userInfoPreferences.getString("userId", null),
                 userInfoPreferences.getString("userRole", null),

@@ -283,7 +283,7 @@ public class AttendanceManagement {
         final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest postRequest = new StringRequest(
                 Request.Method.POST,
-                EWebApiEndpoints.REPORT_ATTENDANCE_ENDPOINT.toString(),
+                EWebApiEndpoints.DECLINE_ATTENDANCE_ENDPOINT.toString(),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
