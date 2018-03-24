@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -68,8 +69,8 @@ public class AttendanceManagement {
             public byte[] getBody() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                params.put("UserId", userInfoPreferences.getString("userId", null));
-                params.put("RoleName", userInfoPreferences.getString("userRole", null));
+                params.put("UserId","AnhBN"); // userInfoPreferences.getString("userId", null)
+                params.put("RoleName", "teacher"); //userInfoPreferences.getString("userRole", null)
                 return EncodeVolleyBody.encodeParams(params, "UTF-8");
             }
 
@@ -111,8 +112,8 @@ public class AttendanceManagement {
             public byte[] getBody() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                params.put("UserId", userInfoPreferences.getString("userId", null));
-                params.put("RoleName", userInfoPreferences.getString("userRole", null));
+                params.put("UserId", "AnhBN"); //userInfoPreferences.getString("userId", null)
+                params.put("RoleName", "teacher"); //userInfoPreferences.getString("userRole", null)
                 params.put("TermId", termId);
                 return EncodeVolleyBody.encodeParams(params, "UTF-8");
             }
@@ -157,8 +158,8 @@ public class AttendanceManagement {
             public byte[] getBody() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                params.put("UserId", userInfoPreferences.getString("userId", null));
-                params.put("RoleName", userInfoPreferences.getString("userRole", null));
+                params.put("UserId", "AnhBN");//userInfoPreferences.getString("userId", null)
+                params.put("RoleName", "teacher");//userInfoPreferences.getString("userRole", null)
                 params.put("TermId", termId);
                 params.put("CourseId", courseId);
 
@@ -343,6 +344,9 @@ public class AttendanceManagement {
                 return super.parseNetworkResponse(response);
             }
         };
+        postRequest.setRetryPolicy(new DefaultRetryPolicy(500000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(postRequest);
     }
 

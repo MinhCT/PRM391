@@ -30,7 +30,6 @@ public class SlotDetailActivity extends AppCompatActivity implements View.OnClic
     ListView lvStudents;
     SlotManagement slotManagement;
     Button btnTakeAttendance;
-
     private int totalStudents, attendedStudents;
     private GetSlotDetailResponse response;
     private String stringDate;
