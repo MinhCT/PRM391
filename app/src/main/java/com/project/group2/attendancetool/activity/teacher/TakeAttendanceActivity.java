@@ -380,7 +380,8 @@ public class TakeAttendanceActivity extends AppCompatActivity {
                 imageUrls,
                 "IS1101",
                 slot.getSlotId(),
-                stringDate
+                stringDate,
+                classes.getClassId()
         );
 
         JsonObjectConverter<AttendanceRequest> converter = new JsonObjectConverter<>();

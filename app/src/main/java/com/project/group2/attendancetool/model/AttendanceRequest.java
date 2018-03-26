@@ -13,18 +13,20 @@ public class AttendanceRequest {
     private String GalleryName;
     private int SlotId;
     private String Date;
+    private String ClassId;
 
     public AttendanceRequest() {
 
     }
 
-    public AttendanceRequest(String userId, String roleName, List<String> imageUrls, String galleryName, int slotId, String date) {
+    public AttendanceRequest(String userId, String roleName, List<String> imageUrls, String galleryName, int slotId, String date, String classId) {
         UserId = userId;
         RoleName = roleName;
         ImageUrls = imageUrls;
         GalleryName = galleryName;
         SlotId = slotId;
         Date = date;
+        ClassId = classId;
     }
 
     public String getUserId() {
@@ -73,5 +75,13 @@ public class AttendanceRequest {
 
     public void setDate(String date) {
         Date = date;
+    }
+
+    public String getClassId() {
+        return ClassId;
+    }
+
+    public void setClassId(String classId) {
+        ClassId = classId;
     }
 }
