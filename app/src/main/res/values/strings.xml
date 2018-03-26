@@ -25,7 +25,8 @@
     <color name="header_color">#C7412E</color>
 
     <!-- Credentials Info -->
-    <string name="google_login_server_client_id">636096643581-1s1gj0spot4b9dl3lgqe34m6piiv5mq6.apps.googleusercontent.com</string>
+    <!--<string name="google_login_server_client_id">636096643581-1s1gj0spot4b9dl3lgqe34m6piiv5mq6.apps.googleusercontent.com</string>-->
+    <string name="google_login_server_client_id">681995421725-4h83cob5os9e61q2kjcousevl3qmd728.apps.googleusercontent.com</string>
 
     <!-- Firebase channel id -->
     <string name="default_notification_channel_id">fcm_default_channel</string>
