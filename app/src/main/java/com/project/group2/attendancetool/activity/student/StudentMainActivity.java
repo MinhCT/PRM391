@@ -2,6 +2,8 @@ package com.project.group2.attendancetool.activity.student;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +19,7 @@ import com.project.group2.attendancetool.interfaces.IVolleyCallback;
 import com.project.group2.attendancetool.model.Course;
 import com.project.group2.attendancetool.model.Schedule;
 import com.project.group2.attendancetool.model.Term;
+import com.project.group2.attendancetool.request.LoginManagement;
 import com.project.group2.attendancetool.response.CourseResponse;
 import com.project.group2.attendancetool.response.ScheduleResponse;
 import com.project.group2.attendancetool.response.TermResponse;
@@ -63,6 +66,21 @@ public class StudentMainActivity extends AppCompatActivity {
                 loadTermToSpinner(termsResponse.getTerms());
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.student_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menuItemLogoutStudent) {
+            LoginManagement loginManagement = new LoginManagement(this);
+            loginManagement.logout();
+        }
+        return true;
     }
 
     /**

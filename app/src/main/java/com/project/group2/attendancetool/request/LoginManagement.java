@@ -14,9 +14,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.project.group2.attendancetool.R;
+import com.project.group2.attendancetool.activity.MainActivity;
 import com.project.group2.attendancetool.enums.ELogTag;
 import com.project.group2.attendancetool.enums.EWebApiEndpoints;
 import com.project.group2.attendancetool.interfaces.IVolleyCallback;
+import com.project.group2.attendancetool.utils.Constants;
 
 import org.json.JSONObject;
 
@@ -85,9 +91,16 @@ public class LoginManagement {
         editor.clear();
         editor.apply();
 
+        // Configure sign-in to request the user's ID, email address, and basic profile.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(getCurrentContext(), gso);
+        googleSignInClient.signOut();
+
         // Return to login screen
-        Intent startMain = new Intent(Intent.ACTION_MAIN);
-        startMain.addCategory(Intent.CATEGORY_HOME);
+        Intent startMain = new Intent(getCurrentContext(), MainActivity.class);
         startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         getCurrentContext().startActivity(startMain);
     }

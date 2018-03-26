@@ -16,6 +16,7 @@ public enum EWebApiEndpoints {
     TAKE_ATTENDANCE_IMAGES_ENDPOINT("api/AttendanceManagement/TakeAttendanceByImage"),
     TAKE_ATTENDANCE_MANUALLY_ENDPOINT("api/AttendanceManagement/TakeAttendanceManually");
 
+    //private final String HOST_URL = "https://ef66af2e.ngrok.io/";
     private final String HOST_URL = "http://10.0.2.2:58262/";
 
     private String fullEndpoint;
