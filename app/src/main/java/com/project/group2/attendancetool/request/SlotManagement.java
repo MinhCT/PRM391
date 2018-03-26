@@ -1,6 +1,8 @@
 package com.project.group2.attendancetool.request;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.android.volley.NetworkResponse;
@@ -46,11 +48,11 @@ public class SlotManagement {
         final int[] statusCode = new int[1];
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
-
+        SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         try{
             jsonObject.put("Date", date); //set for value date
-            jsonObject.put("UserId", "AnhBN");//used in shared preference
-            jsonObject.put("RoleName", "teacher");//used in share preference
+            jsonObject.put("UserId", userInfoPreferences.getString("userId", null));//used in shared preference
+            jsonObject.put("RoleName", userInfoPreferences.getString("userRole", null));//used in share preference
             jsonObject.put("SlotId", slotId);
             jsonObject.put("ClassId", classId);
             jsonArray.put(jsonObject);

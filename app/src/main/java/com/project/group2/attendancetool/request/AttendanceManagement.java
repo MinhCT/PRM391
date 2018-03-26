@@ -223,11 +223,11 @@ public class AttendanceManagement {
         final int[] statusCode = new int[1];
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
-
+        SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         try{
             jsonObject.put("Date", date); //set for value date
-            jsonObject.put("UserId", "AnhBN");//used in shared preference
-            jsonObject.put("RoleName", "teacher");//used in shared preference
+            jsonObject.put("UserId", userInfoPreferences.getString("userId", null));//used in shared preference
+            jsonObject.put("RoleName", userInfoPreferences.getString("userRole", null));//used in shared preference
             jsonArray.put(jsonObject);
         }catch(Exception e){
         }

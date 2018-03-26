@@ -1,6 +1,8 @@
 package com.project.group2.attendancetool.activity.teacher;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.project.group2.attendancetool.R;
 import com.project.group2.attendancetool.activity.teacher.Fragments.NotificationFragment;
@@ -20,6 +24,9 @@ public class TeacherMainActivity extends AppCompatActivity
 
     Toolbar toolbar;
     NavigationView navigationView;
+    View mHeaderView;
+    TextView tvUsername;
+    TextView tvEmail;
 
 
     @Override
@@ -46,6 +53,13 @@ public class TeacherMainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //set user/email logged in
+        mHeaderView = navigationView.getHeaderView(0);
+        tvUsername = (TextView) mHeaderView.findViewById(R.id.tvLoggedUserName);
+        tvEmail = (TextView)mHeaderView.findViewById(R.id.tvLoggedEmail);
+        SharedPreferences userInfoPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        tvUsername.setText(userInfoPreferences.getString("userFullName", null));
+        tvEmail.setText(userInfoPreferences.getString("userEmail", null));
         navigationView.setNavigationItemSelectedListener(this);
     }
 
