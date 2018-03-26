@@ -14,6 +14,7 @@ import com.project.group2.attendancetool.R;
 import com.project.group2.attendancetool.activity.teacher.Fragments.NotificationFragment;
 import com.project.group2.attendancetool.activity.teacher.Fragments.ScheduleFragment;
 import com.project.group2.attendancetool.activity.teacher.Fragments.SlotListFragment;
+import com.project.group2.attendancetool.request.LoginManagement;
 
 public class TeacherMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -76,6 +77,10 @@ public class TeacherMainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.menuItemLogoutTeacher) {
+            LoginManagement loginManagement = new LoginManagement(this);
+            loginManagement.logout();
         }
 
         return super.onOptionsItemSelected(item);

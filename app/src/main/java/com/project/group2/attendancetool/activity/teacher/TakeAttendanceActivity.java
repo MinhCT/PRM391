@@ -120,14 +120,13 @@ public class TakeAttendanceActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case Define.ALBUM_REQUEST_CODE:
-                selectedImagesPaths = data.getParcelableArrayListExtra(Define.INTENT_PATH);
-
                 try {
+                    selectedImagesPaths = data.getParcelableArrayListExtra(Define.INTENT_PATH);
                     Picasso.with(this).load(selectedImagesPaths.get(0)).into(ivAttendanceImg1);
                     Picasso.with(this).load(selectedImagesPaths.get(1)).into(ivAttendanceImg2);
                     Picasso.with(this).load(selectedImagesPaths.get(2)).into(ivAttendanceImg3);
                 } catch (Exception ex) {
-                    Log.w(ELogTag.PICASSO_IMAGE_LOADING_ERROR.toString(), "Can not fully load all 3 images, perhaps user choose less than 3?");
+                    Log.w(ELogTag.PICASSO_IMAGE_LOADING_ERROR.toString(), "Can not fully load all images, perhaps user choose less than 3?");
                 }
                 break;
         }
@@ -456,7 +455,7 @@ public class TakeAttendanceActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnOpenCamera)
     void openCamera() {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         startActivity(intent);
     }
 }
